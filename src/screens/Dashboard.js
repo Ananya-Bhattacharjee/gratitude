@@ -59,7 +59,7 @@ const Dashboard = () => {
             nestedScrollEnabled
             data={entries}
             renderItem={({ item }) => (
-                <GratitudeCard mood={item.mood} description={item.entryDescription}/>
+                <GratitudeCard EntryId={item.id} mood={item.mood} description={item.entryDescription}/>
             )}
             />
             </View>

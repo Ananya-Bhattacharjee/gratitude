@@ -14,7 +14,7 @@ const Data = () => {
 }*/
 
 //component - card for each gratirude entry
-const GratitudeCard = ({  mood, description }) => {
+const GratitudeCard = ({  EntryId, mood, description }) => {
 
    //unique id for each gratitude entry.
    //const id = EntryID;
