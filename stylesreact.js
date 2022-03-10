@@ -13,8 +13,9 @@ export default StyleSheet.create({
       height: '2.3em'
     },
     body: {
+      flex: 1,
       backgroundColor: '#b0caef',
-      height: '100vh',
+      minHeight: '100vh',
       alignItems: 'center',
     },
     logo: {

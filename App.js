@@ -8,10 +8,10 @@ import { auth } from './firebase';
 
 
 //import screens
-import Launch from './src/screens/Launch'
-import Login from './src/screens/Login'
-import SignUp from './src/screens/Signup'
-import Dashboard from'./src/screens/Dashboard'
+import Launch from './src/screens/Launch';
+import Login from './src/screens/Login';
+import SignUp from './src/screens/Signup';
+import Dashboard from'./src/screens/Dashboard';
 
 //navigation modules
 import { NavigationContainer } from '@react-navigation/native';

@@ -11,21 +11,21 @@ import Dropdown from '../components/Dropdown'
 
 //import firebase
 import { db, auth } from "../../firebase";
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, collection } from 'firebase/firestore';
 
 //import date
 import moment from 'moment'; 
 
-const Create = () => {
+const EditEntry = () => {
 
-    const [newMood, setMood] = useState('1');
+    const [newMood, setMood] = useState('');
     const [newEntry, setEntry] = useState('');
     const email = auth.currentUser.email;
     const currentDate = moment().format("DD/MM/YYYY");
 
 
-    //create document in member collection
-    const addEntry = async () => {
+    //update document in member collection
+    const updateEntry = async () => {
 
         const collectionRef = collection(db, "entries");
         const payload = {
@@ -34,7 +34,7 @@ const Create = () => {
           entryDescription: newEntry,
           mood: newMood,
         }
-        await addDoc(collectionRef, payload);
+        await setDoc(collectionRef, payload);
       }
   
 
@@ -43,11 +43,11 @@ const Create = () => {
         <div>
         <View style={styles.body}>
         <View style={stylesCreate.createForm}>
-        <Text style={styles.screenTitle}>CREATE NEW<br/>ENTRY</Text>
+        <Text style={styles.screenTitle}>Update <br/>ENTRY</Text>
         <Text style={stylesCreate.label}>How Are You Feeling?</Text>
         <Dropdown newMood={newMood} setMood={setMood}/>
         <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
-        <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
+        <CustomButton text='UPDATE' onPress={updateEntry}></CustomButton>
         </View>
         </View>
         </div>

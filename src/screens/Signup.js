@@ -48,7 +48,6 @@ const SignUp = () => {
       const collectionRef = collection(db, "member");
       const payload = {
         email: newEmail,
-        password: newPassword,
         code: newCode,
       }
       await addDoc(collectionRef, payload);

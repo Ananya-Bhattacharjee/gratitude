@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Button, Text, View, Linking } from 'react-native';
 import styles from "../../stylesreact"
 //import {Link } from 'react-router-dom';
+
+//firebase
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
 

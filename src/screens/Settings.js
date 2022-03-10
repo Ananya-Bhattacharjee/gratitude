@@ -20,7 +20,7 @@ const Settings = () => {
         .then((result)=>{
             console.log(result);
             setIsSignedIn(false);
-            
+            console.log("logged out")
         })
         .catch((err)=>{
             console.log(err);
