@@ -16,7 +16,7 @@ import { setDoc, collection } from 'firebase/firestore';
 //import date
 import moment from 'moment'; 
 
-const EditEntry = () => {
+const EditEntry = ({ entryId }) => {
 
     const [newMood, setMood] = useState('');
     const [newEntry, setEntry] = useState('');
@@ -42,9 +42,9 @@ const EditEntry = () => {
     return (
         <div>
         <View style={styles.body}>
-        <View style={stylesCreate.createForm}>
+        <View style={stylesEdit.editForm}>
         <Text style={styles.screenTitle}>Update <br/>ENTRY</Text>
-        <Text style={stylesCreate.label}>How Are You Feeling?</Text>
+        <Text style={stylesEdit.label}>How Are You Feeling?</Text>
         <Dropdown newMood={newMood} setMood={setMood}/>
         <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
         <CustomButton text='UPDATE' onPress={updateEntry}></CustomButton>
@@ -54,9 +54,9 @@ const EditEntry = () => {
     )
     }
 
-export default Create;
+export default EditEntry;
 
-const stylesCreate = StyleSheet.create({
+const stylesEdit = StyleSheet.create({
     label: {
         fontSize: 25,
         color: '#0060ff',
@@ -67,7 +67,7 @@ const stylesCreate = StyleSheet.create({
     gratitudeField: {
         minHeight: 500,
     },
-    createForm: {
+    editForm: {
         display: 'flex',
         flexWrap: 'wrap',
         alignContent: 'center',

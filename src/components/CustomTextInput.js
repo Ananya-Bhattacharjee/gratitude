@@ -2,7 +2,7 @@ import { CurrentRenderContext } from '@react-navigation/native';
 import React, {component} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native'
 
-const CustomInput = ({ value, setValue, placeholder, secureTextEntry }) => {
+const CustomTextInput = ({ value, setValue, placeholder, secureTextEntry }) => {
     return (
         <View style={styles.container}>
             <TextInput 
@@ -32,4 +32,4 @@ export const styles = StyleSheet.create({
     }
 })
 
-export default CustomInput;
+export default CustomTextInput;

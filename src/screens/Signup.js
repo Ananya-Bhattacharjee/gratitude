@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/core';
 //import components
 import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
-import CustomInput from '../components/custominput'
+import CustomTextInput from '../components/CustomTextInput'
 import stylesreact from '../../stylesreact';
 
 //firebase
@@ -46,7 +46,9 @@ const SignUp = () => {
     const addMember = async () => {
 
       const collectionRef = collection(db, "member");
+      const docRef = doc(collectionRef);
       const payload = {
+        memberId: docRef.id,
         email: newEmail,
         code: newCode,
       }
@@ -64,9 +66,9 @@ const SignUp = () => {
           <Text style={styles.logoText}>ACCOUNT</Text>
           </View>   
         
-        <CustomInput placeholder="Email" value={newEmail} setValue={setEmail}/>
-        <CustomInput placeholder="Password" value={newPassword} setValue={setPassword} secureTextEntry={true}/>
-        <CustomInput placeholder="Code" value={newCode} setValue={setCode}/>
+        <CustomTextInput placeholder="Email" value={newEmail} setValue={setEmail}/>
+        <CustomTextInput placeholder="Password" value={newPassword} setValue={setPassword} secureTextEntry={true}/>
+        <CustomTextInput placeholder="Code" value={newCode} setValue={setCode}/>
         <CustomButton text='SIGN UP' onPress={RegisterUser}></CustomButton>
         <Text 
         onPress={() => navigation.navigate('Login')}

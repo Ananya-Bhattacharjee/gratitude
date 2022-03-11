@@ -11,13 +11,14 @@ import Dropdown from '../components/Dropdown'
 
 //import firebase
 import { db, auth } from "../../firebase";
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 //import date
 import moment from 'moment'; 
 
 const Create = () => {
 
+    //const entryId = '';
     const [newMood, setMood] = useState('1');
     const [newEntry, setEntry] = useState('');
     const email = auth.currentUser.email;
@@ -27,14 +28,21 @@ const Create = () => {
     //create document in member collection
     const addEntry = async () => {
 
+        
         const collectionRef = collection(db, "entries");
-        const payload = {
+        const newEntryRef = doc(collectionRef);
+
+        const payload = { 
+          entryId: newEntryRef.id,
           date: currentDate,
           memberEmail: email,
           entryDescription: newEntry,
           mood: newMood,
         }
-        await addDoc(collectionRef, payload);
+        await setDoc(newEntryRef,payload);
+        
+
+    
       }
   
 

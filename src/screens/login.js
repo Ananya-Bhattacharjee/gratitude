@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/core';
 //import components
 import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
-import CustomInput from '../components/custominput'
+import CustomTextInput from '../components/CustomTextInput'
 
 
 
@@ -49,8 +49,8 @@ const Login = () => {
           <Text style={styles.logoText}>GRATITUDE</Text>
           <Text style={styles.logoText}>SPACE</Text>
           </View>   
-        <CustomInput placeholder="Email" value={email} setValue={setEmail}/>
-        <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
+        <CustomTextInput placeholder="Email" value={email} setValue={setEmail}/>
+        <CustomTextInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
         <CustomButton text='SIGN IN' onPress={handleSignIn}></CustomButton>
         <Text 
         onPress={() => navigation.navigate('Signup')}
