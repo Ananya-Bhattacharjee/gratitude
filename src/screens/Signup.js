@@ -52,7 +52,9 @@ const SignUp = () => {
         email: newEmail,
         code: newCode,
       }
-      await addDoc(collectionRef, payload);
+      await setDoc(docRef, payload);
+
+
     }
 
      

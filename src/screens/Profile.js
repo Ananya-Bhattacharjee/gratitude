@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, StyleSheet, Button, FlatList} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Button, FlatList, TouchableOpacity} from 'react-native'
 import styles from "../../stylesreact"
 
 
@@ -8,7 +8,30 @@ import StatusBarHeader from '../components/statusbar'
 
 //import firebase
 import { db, auth } from "../../firebase";
-import { setDoc, collection, where, getDocs, doc, query  } from 'firebase/firestore';
+import { setDoc, collection, where, getDocs, doc, query, deleteDoc  } from 'firebase/firestore';
+
+function DeleteButton()  {
+
+    //const member = memberId;
+
+    //deletes account of currently signed in user.
+
+    const DeleteEntry = async () => {
+
+        //await deleteDoc(doc(db,"member",member))
+        alert("Deleted");
+
+    }
+
+    return (
+        <TouchableOpacity style={styles.buttonBase} onPress={DeleteEntry}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Delete Account</Text>
+        </View>
+      </TouchableOpacity>
+    )
+}
+
 
 const Profile = () => {
 
@@ -17,7 +40,19 @@ const Profile = () => {
     //const [code, setCode] = useState('');
 
     const [members, setMembers] = useState([]);
+    const [mounted, setMounted] = useState(true);
 
+
+    useEffect(() => {
+        if(mounted) {
+            GetMember();
+        }
+        return () => {
+            setMounted(false);
+        }
+    }, []);
+
+    
 
 
     const GetMember = async () => {
@@ -43,7 +78,7 @@ const Profile = () => {
         <div>
         <View style={styles.body}>
         <Text style={styles.screenTitle}>PROFILE</Text>
-        <Button title='Get Member' onPress={GetMember}/>
+        {/*<Button title='Get Member' onPress={GetMember}/>*/}
         <FlatList 
             nestedScrollEnabled
             data={members}
@@ -54,19 +89,17 @@ const Profile = () => {
                   editable = {false}
                   style={stylesProfile.moodField}
               />
-              <TextInput
-                  value = {"Code: " + item.code}
-                  editable = {false}
-                  style={stylesProfile.entryField}
-              />
               {/*Button for Deleting User Account. Will redirect to Login*/}
           </View>
             )}
+            ListFooterComponent={<DeleteButton/>}
         />
         </View>
         </div>
     )
 }
+
+
 
 export default Profile;
 
@@ -84,10 +117,24 @@ const stylesProfile = StyleSheet.create({
       borderColor: '#e8e8e8',
       borderWidth: 1,
       borderRadius: 10,
-
       padding: 10,
       marginVertical: 5,
       marginLeft: 'auto',
       marginRight: 'auto',
   },      
+    buttonBase: {
+        width: "100%",
+        textAlign: "center",
+    },
+    button: {
+        backgroundColor: '#6467dc',
+        marginTop: 20,
+    },
+    buttonText: {
+        fontSize: 25,
+        color: 'white',
+        fontWeight: '500',
+        padding: 5,
+        paddingBottom: 10,
+    }
 })

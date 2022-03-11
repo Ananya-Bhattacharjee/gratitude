@@ -38,6 +38,7 @@ export default StyleSheet.create({
       color: '#0060ff',
       fontSize: 25,
       fontWeight: '400',
+      textAlign: 'center',
     },
     hyperlink: {
         marginTop: '0.5em',
@@ -74,5 +75,8 @@ export default StyleSheet.create({
         fontSize: 38,
         fontWeight: "400",
         lineHeight: 35,
+    },
+    flexStyle: {
+      flex: 1,
     }
   });

@@ -11,7 +11,7 @@ import CustomButton from '../components/CustomButton'
 //import components
 import StatusBarHeader from '../components/statusbar';
 import { db, auth } from "../../firebase";
-import { collection, getDocs, where, query, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, where, query, deleteDoc, onSnapshot } from 'firebase/firestore';
 import GratitudeCard from '../components/GratitudeCard';
 
 //import date
@@ -19,12 +19,34 @@ import moment from 'moment';
 
 
 const Dashboard = () => {
-    
-    const [entries, setEntries] = useState([]);
-    
 
+
+    const [entries, setEntries] = useState([]);
+    //const [mounted, setMounted] = useState(true);
+    
+    useEffect(() => {
+        const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const entriesArray = [];
+            querySnapshot.forEach((doc) => {
+                entriesArray.push(doc.data());
+            });
+            setEntries(entriesArray);
+        });
+        return unsubscribe;
+    }, []);
     
    
+    const getOverallMood = () => {
+
+
+        //get mood values
+        //convert mood values from string to integer
+
+        //count mood values
+        //add mood values together
+        //divide mood values by 
+    }
 
 
     const GetEntries = async () => {
@@ -55,18 +77,24 @@ const Dashboard = () => {
 
     return (
    
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView style={styles.flexStyle}>
             <View style={styles.body}>
             {/*<Text style={styles.screenTitle}>DASHBOARD</Text>*/}
-            <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
-            <Text style={styles.heading2}>Overall Mood: 5</Text>
-            <Button title='Get Entries' onPress={GetEntries}/>
+            
+            {/*<Button title='Get Entries' onPress={GetEntries}/>*/}
             <FlatList 
-            nestedScrollEnabled
             data={entries}
             renderItem={({ item }) => (
-                <GratitudeCard entryId={item.entryId} email={item.memberEmail} entryDate={item.date} mood={item.mood} description={item.entryDescription}/>
+                <GratitudeCard entryId={item.entryId} email={item.memberEmail} entryDate={item.date} mood={item.mood} description={item.entryDescription} 
+                />
             )}
+            ListHeaderComponent={
+                <View style={{marginBottom:30}}>
+                <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
+                <Text style={styles.heading2}>Overall Mood: 5</Text>
+                </View>
+            }
+            ListFooterComponent={<View style={{minHeight: 160}}/>}
             />
             </View>
         </KeyboardAvoidingView>

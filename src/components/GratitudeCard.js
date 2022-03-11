@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, StyleSheet, ScrollView, FlatList, Modal, TouchableOpacity, Button, Pressable, Alert} from 'react-native'
 
 //import components
@@ -12,6 +12,7 @@ import { db, auth } from "../../firebase";
 import { collection, getDocs, where, query, doc, deleteDoc, setDoc } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native-web';
 import EditEntry from '../screens/EditEntry';
+import { AuthErrorCodes } from 'firebase/auth';
 
 
 function EditButton({ entryId, email, entryDate, mood, description })  {
@@ -21,6 +22,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
     const [newDescription, setNewDescription] = useState(description);
     const [modalVisible, setModalVisible] = useState(false);
 
+    
 
     const editEntry = async () => {
 
@@ -33,6 +35,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
             entryDescription: newDescription,
             mood: newMood,
           });
+
 
 
 
@@ -55,17 +58,21 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text>How are you feeling?</Text>
+            <Text 
+            style={{
+              fontSize: 30, 
+              fontWeight: '500',
+              color: '#0060ff',
+              textAlign: 'center',
+              }}>
+              How are you feeling?
+              </Text>
             <Dropdown newMood={newMood} setMood={setNewMood}/>
             <GratitudeInput
             style={styles.modalText}
             value={newDescription}
             setValue={setNewDescription}
             placeholder="Write Here..."
-            />
-            <TextInput
-            
-            
             />
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -83,7 +90,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
         </View>
       </Modal>
       <Pressable
-        style={[styles.button, styles.buttonOpen]}
+        style={[styles.editbutton, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.textStyle}>Edit</Text>
@@ -127,11 +134,12 @@ const GratitudeCard = ({  entryId, email, entryDate, mood, description }) => {
    
     return (
         <View style={styles.container}>
+            {/*
             <TextInput
                 value = {entryId}
                 editable = {false}
                 style={styles.moodField}
-            />
+            />*/}
             <TextInput
                 value = {"Mood: " + mood}
                 editable = {false}
@@ -163,7 +171,10 @@ export default GratitudeCard;
 
 const styles = StyleSheet.create({
     entryField: {
+        paddingTop: 5,
+        paddingBottom: 10,
         fontSize: '20pt',
+        minHeight: 80,
     },
     moodField: {
         fontWeight: 500,

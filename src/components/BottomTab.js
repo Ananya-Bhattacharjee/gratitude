@@ -65,6 +65,7 @@ const BottomTabs = () => {
                    backgroundColor: '#6467dc',
                    height: 80,
                    paddingBottom: 10,
+                   flex: 1,
                  }
                }}
                tabBarOptions={{
@@ -72,9 +73,14 @@ const BottomTabs = () => {
                  activeTintColor: '#0062ff',
                  inactiveTintColor: '#FFFFFF',
                  scrollEnabled: true,
+                 keyboardHidesTabBar: true,
+                 tabBarLabelPosition: "below_icon",
+                 lazy: true,
                }}
+
             >
                 <Tab.Screen name="DASHBOARD" component={Dashboard} 
+                  style={{flex: 1}}
                   options={{
                     headerTitle: 'Today',
                     tabBarIcon: (tabInfo) => {

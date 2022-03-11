@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native'
+import {View, Text, TextInput, StyleSheet, Alert} from 'react-native'
 import styles from "../../stylesreact"
 
 
@@ -41,7 +41,16 @@ const Create = () => {
         }
         await setDoc(newEntryRef,payload);
         
+        setMood('1');
+        setEntry('');
 
+
+        /*
+        Alert.alert("New Entry Added!", "Press Dashboard to View", [
+            {text: "Close", onPress: () => console.log('alert closed')}
+        ]);*/
+
+        alert("New Entry Added");
     
       }
   
