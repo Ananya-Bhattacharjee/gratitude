@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {View, Text, TextInput, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import React, { useState, useEffect } from 'react';
+import {View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Button} from 'react-native'
 
 //navigation modules
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,8 +9,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //navigation
 import { useNavigation } from '@react-navigation/core';
 
-//custom button
+//import components
 import LogoutButton from './LogoutButton'
+import ArrowButtonLeft from './ArrowButtonLeft'
+import ArrowButtonRight from './ArrowButtonRight'
 
 //firebase
 import { auth } from '../../firebase';
@@ -27,6 +29,9 @@ import Create from '../screens/Create'
 import Profile from '../screens/Profile'
 import Settings from '../screens/Settings'
 import { withOrientation } from 'react-navigation';
+
+//import date
+import moment from 'moment'; 
 
 
 const Tab = createBottomTabNavigator();
@@ -47,6 +52,36 @@ function StackTab() {
 
 const BottomTabs = () => {
 
+    //
+    const today = moment().format("DD/MM/YYYY");
+
+    const [currentDate, setCurrentDate] = useState(today);
+
+
+    const [leftArrow, setLeftArrow] = useState('');
+    const [rightArrow, setRightArrow] = useState('');
+    //change current date to previous day
+    const previousDay = () => { 
+      //convert date string to date
+      var dateObj = moment(currentDate, "DD/MM/YYYY").format("DD/MM/YYYY");
+      var previousDate = moment(dateObj, "DD/MM/YYYY").add(-1, 'days').format("DD/MM/YYYY");
+  
+
+      console.log(previousDate);
+      setCurrentDate(previousDate);
+    }
+
+    //change current date to next day
+    const nextDay = () => {
+      //convert date string to date
+      var dateObj = moment(currentDate, "DD/MM/YYYY").format("DD/MM/YYYY");
+      var nextDate = moment(dateObj, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+
+      console.log(nextDate);
+      setCurrentDate(nextDate);
+    }
+
+
   
     return (
             <NavigationContainer>
@@ -59,6 +94,8 @@ const BottomTabs = () => {
                 headerTitleAlign: 'center',
                 headerTitleStyle: {
                   color: 'white',
+                  fontSize: 20,
+                  textTransform: 'uppercase',
                 },
                  tabBarStyle: {
                    position: 'absolute',
@@ -79,10 +116,10 @@ const BottomTabs = () => {
                }}
 
             >
-                <Tab.Screen name="DASHBOARD" component={Dashboard} 
+                <Tab.Screen name="DASHBOARD" children={props => <Dashboard currentDate={currentDate} {...props} />}
                   style={{flex: 1}}
                   options={{
-                    headerTitle: 'Today',
+                    headerTitle: {currentDate},
                     tabBarIcon: (tabInfo) => {
                       return (
                         <MaterialIcons
@@ -92,6 +129,14 @@ const BottomTabs = () => {
                         />
                       );
                     },
+                    tabBarLabel: "DASHBOARD",
+                    headerRight: () => (
+                      <ArrowButtonRight text=">" onPress={nextDay}/>
+                    ),
+                    headerLeft: () => (
+                      //Button onPress next date
+                      <ArrowButtonLeft text="<" onPress={previousDay}/>
+                    ),
                   }}
       
                 />
@@ -110,6 +155,7 @@ const BottomTabs = () => {
                   }}
                 />
                 <Tab.Screen name="PROFILE" component={Profile} 
+                  style={{flex: 1}}
                   options={{
                     headerTitle: 'Profile',
                     tabBarIcon: (tabInfo) => {
@@ -144,6 +190,18 @@ const BottomTabs = () => {
 
 export default BottomTabs;
 
+const stylesTab = StyleSheet.create({
+  arrowButtons: {
+
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 15,
+    textAlign: 'center',
+  },
+})
 
 
 

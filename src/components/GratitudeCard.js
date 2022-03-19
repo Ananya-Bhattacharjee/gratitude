@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
     entryField: {
         paddingTop: 5,
         paddingBottom: 10,
-        fontSize: '20pt',
+        fontSize: 20,
         minHeight: 80,
     },
     moodField: {
-        fontWeight: 500,
-        fontSize: '20pt',
+        fontWeight: "500",
+        fontSize: 20,
     },
     container: {
         backgroundColor: 'white',
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         marginLeft: 'auto',
         marginRight: 'auto',
-        flextDirection: 'row',
+        //flexDirection: 'row',
     },      
     editbutton: {
         borderRadius: 25,

@@ -19,7 +19,6 @@ const Settings = () => {
         signOut(auth)
         .then((result)=>{
             console.log(result);
-            setIsSignedIn(false);
             console.log("logged out")
         })
         .catch((err)=>{

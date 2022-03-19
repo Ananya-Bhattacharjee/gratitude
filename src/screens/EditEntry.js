@@ -60,7 +60,7 @@ const stylesEdit = StyleSheet.create({
     label: {
         fontSize: 25,
         color: '#0060ff',
-        fontWeight: 400,
+        fontWeight: "400",
         textAlign: 'left',
         marginTop: 20,
     },

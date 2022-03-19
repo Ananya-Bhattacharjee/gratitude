@@ -29,16 +29,25 @@ const SignUp = () => {
 
     //sign up function
     const RegisterUser = () => {
-      createUserWithEmailAndPassword(auth, newEmail, newPassword)
-      .then((result)=>{
 
-        console.log(result);
-        addMember();
-        setIsSignedIn(true);
-      })
-      .catch((result)=> {
-        console.log(result);
-      })
+      if(newCode== "PEACE" || newCode=="TRANQUIL") {
+        createUserWithEmailAndPassword(auth, newEmail, newPassword)
+        .then((result)=>{
+  
+          console.log(result);
+          addMember();
+          setIsSignedIn(true);
+        })
+        .catch((result)=> {
+          console.log(result);
+          console.log('Email already exists.');
+          alert('Email already exists. Please try again.')
+        })
+      }
+      else {
+        alert('Code invalid. Please try again');
+      }
+
     }
 
     

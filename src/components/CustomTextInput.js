@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         marginVertical: 5
     },
     input: {
-        fontSize: '25pt',
+        fontSize: 25,
     }
 })
 

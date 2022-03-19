@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
     },
     input: {
-        fontSize: '15pt',
+        fontSize: 15,
         minHeight: 100,
     }
 })

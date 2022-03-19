@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {KeyboardAvoidingView, View, Text, TextInput, StyleSheet, Button, FlatList, ScrollView} from 'react-native';
+import {KeyboardAvoidingView, View, Text, TextInput, StyleSheet, Button, FlatList, ScrollView, 
+    ActivityIndicator} from 'react-native';
 import styles from "../../stylesreact";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,34 +19,85 @@ import GratitudeCard from '../components/GratitudeCard';
 import moment from 'moment'; 
 
 
-const Dashboard = () => {
+const Dashboard = (props) => {
 
 
     const [entries, setEntries] = useState([]);
+    const [moods, setMoods] = useState([]);
+    const [overallMood, setOverallMood] = useState(0);
     //const [mounted, setMounted] = useState(true);
+    const [currentDate, setCurrentDate] = useState('')
+
+    const today = moment().format("DD/MM/YYYY");
+
+    const [headerTitle, setHeaderTitle] = useState('');
     
     useEffect(() => {
-        const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email));
+        const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email), 
+        where("date", "==", props.currentDate));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const entriesArray = [];
+            const moodArray = [];
             querySnapshot.forEach((doc) => {
-                entriesArray.push(doc.data());
+                entriesArray.push(doc.data()),
+                moodArray.push(doc.data().mood);
             });
             setEntries(entriesArray);
+
+            getOverallMood(moodArray);
+
+            console.log(entriesArray);
+
+            console.log("Date " + props.currentDate);
+
+            if(props.currentDate==today) {
+                setHeaderTitle("TODAY");
+            }
+            else {
+                setHeaderTitle(props.currentDate);
+            }
+           
         });
         return unsubscribe;
-    }, []);
+    }, [props.currentDate]);
+
+    // Rerender after headerTitle change
+  useEffect(() => {
+    props.navigation.setOptions({
+      title: headerTitle,
+    });
+  }, [headerTitle, props.navigation]);
     
    
-    const getOverallMood = () => {
+    const getOverallMood = ( moodArray ) => {
 
+        //get length of mood array
+        var NumberOfMood = moodArray.length;
 
-        //get mood values
-        //convert mood values from string to integer
+        var totalMood = 0;
 
-        //count mood values
-        //add mood values together
-        //divide mood values by 
+        //iterate through moods.
+        console.log(moodArray);
+        console.log(NumberOfMood);
+
+        for(let index = 0 ; index < NumberOfMood; index++) {
+            const element = parseInt(moodArray[index]);
+            totalMood = totalMood + element;
+        }
+        console.log(totalMood);
+
+        //divide mood values by number of moods.
+        
+
+        if(NumberOfMood > 0) {
+            var averageMood = Math.round(totalMood / NumberOfMood);
+            setOverallMood(averageMood);
+        }   
+        else {
+            setOverallMood(0);
+        }
+            
+   
     }
 
 
@@ -83,6 +135,7 @@ const Dashboard = () => {
             
             {/*<Button title='Get Entries' onPress={GetEntries}/>*/}
             <FlatList 
+            style={stylesDashboard.flatlist}
             data={entries}
             renderItem={({ item }) => (
                 <GratitudeCard entryId={item.entryId} email={item.memberEmail} entryDate={item.date} mood={item.mood} description={item.entryDescription} 
@@ -91,7 +144,7 @@ const Dashboard = () => {
             ListHeaderComponent={
                 <View style={{marginBottom:30}}>
                 <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
-                <Text style={styles.heading2}>Overall Mood: 5</Text>
+                <Text style={styles.heading2}>Overall Mood: {overallMood}</Text>
                 </View>
             }
             ListFooterComponent={<View style={{minHeight: 160}}/>}
@@ -104,7 +157,9 @@ const Dashboard = () => {
 }
 
 const stylesDashboard = StyleSheet.create({
-
+    flatlist: {
+        width: '100%',
+    }
 })
 
 
