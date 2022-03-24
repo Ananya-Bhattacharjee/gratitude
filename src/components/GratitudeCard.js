@@ -48,6 +48,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
     {
          <View style={styles.centeredView}>
       <Modal
+        propagateSwipe={true}
         animationType="fade"
         transparent={true}
         visible={modalVisible}
@@ -57,7 +58,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <ScrollView style={styles.modalView}>
             <Text 
             style={{
               fontSize: 30, 
@@ -67,7 +68,18 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
               }}>
               How are you feeling?
               </Text>
+            <View style={{marginBottom: 50}}>
             <Dropdown newMood={newMood} setMood={setNewMood}/>
+            </View>
+            <Text 
+            style={{
+              fontSize: 30, 
+              fontWeight: '500',
+              color: '#0060ff',
+              textAlign: 'center',
+              }}>
+              What Happened?
+              </Text>
             <GratitudeInput
             style={styles.modalText}
             value={newDescription}
@@ -86,7 +98,7 @@ function EditButton({ entryId, email, entryDate, mood, description })  {
             >
               <Text style={styles.textStyle}>Close</Text>
             </Pressable>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
       <Pressable
@@ -222,14 +234,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 22,
       },
       modalView: {
         margin: 20,
         backgroundColor: "white",
         borderRadius: 20,
         padding: 35,
-        alignItems: "center",
+        //alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -237,7 +249,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
       },
       button: {
         borderRadius: 20,

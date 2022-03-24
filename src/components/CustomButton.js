@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Pressable, TouchableOpacity, TextInput } from 'react-native';
 
 
 export default function customButton({ text, onPress }) {

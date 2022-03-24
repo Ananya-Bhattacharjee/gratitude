@@ -106,6 +106,10 @@ const Profile = () => {
       //code to incidicate whether participant is in control or experimental group.
     const [code, setCode] = useState('');
     const [numEntries, setNumEntries] = useState(''); //store number of entries entered by member.
+
+    //store met needs stats
+
+    //store character strengths stats
     
     //overallmood
     const [overallMood, setOverallMood] = useState(0);
@@ -225,7 +229,7 @@ const Profile = () => {
                 )}
                 ListHeaderComponent={<Text style={styles.screenTitle}>PROFILE</Text>}
                 ListFooterComponent={
-                <View style={{minHeight: 500, flex: 1}}> 
+                <View style={{minHeight: 700, flex: 1}}> 
                     <Text style={styles.screenTitle}>STATS</Text>
                     <View style={stylesProfile.container}>
                     {/*Entries Made*/}
@@ -250,6 +254,18 @@ const Profile = () => {
                       editable = {false}
                       style={stylesProfile.dataField}
                   />
+                    {/*Met Needs*/}
+                    <TextInput
+                      value = {"Met Needs"}
+                      editable = {false}
+                      style={styles.heading2}
+                    />
+                    {/*Character Strengths*/}
+                    <TextInput
+                      value = {"Character Strengths"}
+                      editable = {false}
+                      style={styles.heading2}
+                    />
                     </View>
                     <DeleteButton/>
                 </View>

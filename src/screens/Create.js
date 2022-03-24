@@ -8,6 +8,8 @@ import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
 import GratitudeInput from '../components/GratitudeInput'
 import Dropdown from '../components/Dropdown'
+import MetNeedsMenu from '../components/MetNeedsMenu'
+import CharacterMenu from '../components/CharacterMenu'
 
 //import firebase
 import { db, auth } from "../../firebase";
@@ -25,7 +27,10 @@ const Create = (props) => {
      const [code, setCode] = useState('');
     
     //const entryId = '';
-    const [newMood, setMood] = useState('1');
+    const [newMoodBefore, setMoodBefore] = useState('1');
+    const [newMoodAfter, setMoodAfter] = useState('');
+    const [needs, setNeeds] = useState([]);
+    const [characters, setCharacters] = useState([]);
     const [newEntry, setEntry] = useState('');
     const email = auth.currentUser.email;
     const currentDate = moment().format("DD/MM/YYYY");
@@ -46,11 +51,15 @@ const Create = (props) => {
           date: currentDate,
           memberEmail: email,
           entryDescription: newEntry,
-          mood: newMood,
+          moodBefore: newMoodBefore,
+          moodAfter: newMoodAfter,
+          needs: needs,
+          characters: characters,
         }
         await setDoc(newEntryRef,payload);
         
-        setMood('1');
+        setMoodBefore('1');
+        setMoodAfter('1');
         setEntry('');
 
 
@@ -83,9 +92,16 @@ const Create = (props) => {
             <View style={styles.body}>
             <View style={stylesCreate.createForm}>
             <Text style={styles.screenTitle}>CREATE NEW<br/>ENTRY</Text>
-            <Text style={stylesCreate.label}>How Are You Feeling?</Text>
-            <Dropdown newMood={newMood} setMood={setMood}/>
+            <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
+            <Dropdown newMood={newMoodBefore} setMood={setMoodAfter}/>
+            <Text style={stylesCreate.label}>Met Needs</Text>
+            <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
+            <Text style={stylesCreate.label}>Character Strengths</Text>
+            <CharacterMenu selectedCharacters={characters} setSelectedCharacters={setCharacters}/>
+            <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
             <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
+            <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
+            <Dropdown newMood={newMoodAfter} setMood={setMoodAfter}/>
             <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
             </View>
             </View>
@@ -95,13 +111,16 @@ const Create = (props) => {
     else { //control condition
         console.log("CONTROL");
         return (
-            <ScrollView>
+            <ScrollView style={stylesCreate.scrollStyle}>
             <View style={styles.body}>
             <View style={stylesCreate.createForm}>
             <Text style={styles.screenTitle}>CREATE NEW<br/>ENTRY</Text>
-            <Text style={stylesCreate.label}>How Are You Feeling?</Text>
-            <Dropdown newMood={newMood} setMood={setMood}/>
+            <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
+            <Dropdown newMood={newMoodBefore} setMood={setMoodBefore}/>
+            <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
             <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
+            <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
+            <Dropdown newMood={newMoodAfter} setMood={setMoodAfter}/>
             <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
             </View>
             </View>
@@ -128,5 +147,9 @@ const stylesCreate = StyleSheet.create({
         display: 'flex',
         flexWrap: 'wrap',
         alignContent: 'center',
+        alignSelf: 'center',
+        marginBottom: 110,
+    },
+    scrollStyle: {
     }
 })
