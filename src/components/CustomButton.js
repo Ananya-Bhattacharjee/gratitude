@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     width: 300,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: '3em',
+    marginTop: 20,
   },
   buttonText: {
     color: 'white',

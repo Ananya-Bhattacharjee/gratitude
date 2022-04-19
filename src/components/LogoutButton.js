@@ -18,7 +18,7 @@ function LogoutButton({ onPress }) {
 const styles = StyleSheet.create({
   buttonBase: {
     width: "100%",
-    textAlign: "center",
+    
   },
   button: {
     backgroundColor: '#6467dc',
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     padding: 5,
     paddingBottom: 10,
+    textAlign: "center",
   }
 })
 
@@ -37,13 +38,3 @@ const styles = StyleSheet.create({
 
 export default LogoutButton;
 
-/*
-const SignOutUser = () => {
-    signOut(auth)
-    .then((result)=>{
-        setIsSignedIn(false);
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-}*/

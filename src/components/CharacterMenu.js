@@ -8,7 +8,7 @@ import { xorBy } from 'lodash'
 
 const K_OPTIONS = [
   {
-    item: 'Love',
+    item: 'Appreciation of Beauty & Excellence - "I recognize, emotionally experience, and appreciate the beauty around me and the skill of others."',
     id: '1',
   },
   {

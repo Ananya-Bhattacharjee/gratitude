@@ -108,24 +108,39 @@ const Profile = () => {
     const [numEntries, setNumEntries] = useState(''); //store number of entries entered by member.
 
     //store met needs stats
-
-    //store character strengths stats
+    const [physicalWellbeing, setPhysicalWellbeing] = useState(0);
+    const [peaceCalm, setPeaceCalm] = useState(0);
+    const [energisingMoments, setEnergisingMoments] = useState(0);
+    const [engagementFlow, setEngagementFlow] = useState(0);
+    const [connection, setConnection] = useState(0);
+    const [accomplishment, setAccomplishment] = useState(0);
+    const [meaning, setMeaning] = useState(0);
     
     //overallmood
-    const [overallMood, setOverallMood] = useState(0);
+    const [overallMoodBefore, setOverallMoodBefore] = useState(0);
+    const [overallMoodAfter, setOverallMoodAfter] = useState(0);
 
     useEffect(() => {
         const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const entriesArray = [];
-            const moodArray = [];
+            const moodArrayBefore = [];
+            const moodArrayAfter = [];
+            const needsArray = [];
             querySnapshot.forEach((doc) => {
                 entriesArray.push(doc.data()),
-                moodArray.push(doc.data().mood);
+                moodArrayBefore.push(doc.data().moodBefore.count);
+                moodArrayAfter.push(doc.data().moodAfter.count);
+                needsArray.push(doc.data().needs)
             });
             setEntries(entriesArray);
 
-            getEntryData(moodArray);
+            console.log("Needs Array:" + needsArray);
+
+            countNeeds(needsArray)
+
+            getOverallMoodBefore(moodArrayBefore);
+            getOverallMoodAfter(moodArrayAfter);
             GetMember();
         });
         return unsubscribe;
@@ -153,6 +168,7 @@ const Profile = () => {
       )*/
 
       setMembers(membersArray);
+    
 
       //get membercode
      
@@ -160,7 +176,7 @@ const Profile = () => {
     }
 
     //get overall mood of user for total days.
-    const getEntryData= ( moodArray ) => {
+    const getOverallMoodBefore= ( moodArray ) => {
 
         //get length of mood array
         var NumberOfMood = moodArray.length;
@@ -182,23 +198,110 @@ const Profile = () => {
 
         if(NumberOfMood > 0) {
             var averageMood = Math.round(totalMood / NumberOfMood);
-            setOverallMood(averageMood);
+            setOverallMoodBefore(averageMood);
         }   
         else {
-            setOverallMood(0);
+            setOverallMoodBefore(0);
         }
 
         setNumEntries(NumberOfMood);
     }
 
+    const getOverallMoodAfter= ( moodArray ) => {
+
+        //get length of mood array
+        var NumberOfMood = moodArray.length;
+
+        var totalMood = 0;
+
+        //iterate through moods.
+        console.log(moodArray);
+        console.log(NumberOfMood);
+
+        for(let index = 0 ; index < NumberOfMood; index++) {
+            const element = parseInt(moodArray[index]);
+            totalMood = totalMood + element;
+        }
+        console.log(totalMood);
+
+        //divide mood values by number of moods.
+        
+
+        if(NumberOfMood > 0) {
+            var averageMood = Math.round(totalMood / NumberOfMood);
+            setOverallMoodAfter(averageMood);
+        }   
+        else {
+            setOverallMoodAfter(0);
+        }
+
+        setNumEntries(NumberOfMood);
+    }
+
+    const countNeeds = ( needsArray ) => {
+
+        //console.log("Needs: " + needsArray[0][0].id)
+
+        var countPhysicalWellbeing = 0
+        var countPeaceCalm = 0
+        var countEnergisingMoments = 0
+        var countEngagementFlow = 0
+        var countConnection = 0
+        var countAccomplishment = 0
+        var countMeaning = 0
+
+        //iterate through array of needs.
+        for(let i = 0; i < needsArray.length; i++) {
+            for (let j = 0; j < needsArray[i].length; j++) {
+                if(needsArray[i][j].id == "1") {
+                     //count physical wellbeing
+                     countPhysicalWellbeing++
+                     setPhysicalWellbeing(countPhysicalWellbeing)
+                }
+                if(needsArray[i][j].id == "2") {
+                    //count peacecalm
+                    countPeaceCalm++
+                    setPeaceCalm(countPeaceCalm)
+                }
+                if(needsArray[i][j].id == "3") {
+                    //count energising moments
+                    countEnergisingMoments++
+                    setEnergisingMoments(countEnergisingMoments)
+                }
+                if(needsArray[i][j].id == "4") {
+                    //count engagement flow
+                    countEngagementFlow++
+                    setEngagementFlow(countEngagementFlow)
+                }
+                if(needsArray[i][j].id == "5") {
+                     //count connection
+                    countConnection++
+                    setConnection(countConnection)
+                }
+                if(needsArray[i][j].id == "6") {
+                    //count accomplishment
+                    countAccomplishment++
+                    setAccomplishment(countAccomplishment)
+                }
+                if(needsArray[i][j].id == "7") {
+                    //count meaning
+                    countMeaning++
+                    setMeaning(countMeaning)
+                }
+            }
+
+        }
+
+
+        
+
+    } 
+
     //experimental condition
     if(code=="TRANQUIL") {
         return (
-            <KeyboardAvoidingView style={styles.flexStyle}>
-            <View style={styles.body}>
-            {/*<Button title='Get Member' onPress={GetMember}/>*/}
             <FlatList 
-                style={{width: "100%"}}
+                style={{width: "100%", backgroundColor: "#b0caef"}}
                 data={members}
                 renderItem={({ item }) => (
                   <View style={stylesProfile.container}>
@@ -239,7 +342,7 @@ const Profile = () => {
                       style={styles.heading2}
                     />
                     <TextInput
-                      value = {numEntries}
+                      value = {"Total Entries: " + numEntries}
                       editable = {false}
                       style={stylesProfile.dataField}
                   />
@@ -250,7 +353,12 @@ const Profile = () => {
                       style={styles.heading2}
                     />
                      <TextInput
-                      value = {overallMood}
+                      value = {"Before: " + overallMoodBefore}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                  />
+                   <TextInput
+                      value = {"After: " + overallMoodAfter}
                       editable = {false}
                       style={stylesProfile.dataField}
                   />
@@ -260,11 +368,40 @@ const Profile = () => {
                       editable = {false}
                       style={styles.heading2}
                     />
-                    {/*Character Strengths*/}
                     <TextInput
-                      value = {"Character Strengths"}
+                      value = {"Physical Wellbeing => " + physicalWellbeing}
                       editable = {false}
-                      style={styles.heading2}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Peace & Calm => " + peaceCalm}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Energizing Moments => " + energisingMoments}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Engagement / Flow => " + engagementFlow}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Connection => " + connection}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Accomplishment => " + accomplishment}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                    />
+                    <TextInput
+                      value = {"Meaning / Fulfillment => " + meaning}
+                      editable = {false}
+                      style={stylesProfile.dataField}
                     />
                     </View>
                     <DeleteButton/>
@@ -272,17 +409,12 @@ const Profile = () => {
              
             }
             />
-            </View>
-            </KeyboardAvoidingView>
         )
     }
     else { //control condition
         return (
-            <KeyboardAvoidingView style={styles.flexStyle}>
-            <View style={styles.body}>
-            {/*<Button title='Get Member' onPress={GetMember}/>*/}
             <FlatList 
-                style={{width: "100%"}}
+                style={{width: "100%", backgroundColor: "#b0caef"}}
                 data={members}
                 renderItem={({ item }) => (
                   <View style={stylesProfile.container}>
@@ -323,7 +455,7 @@ const Profile = () => {
                       style={styles.heading2}
                     />
                     <TextInput
-                      value = {numEntries}
+                      value = {"Total Entries: " + numEntries}
                       editable = {false}
                       style={stylesProfile.dataField}
                   />
@@ -333,8 +465,13 @@ const Profile = () => {
                       editable = {false}
                       style={styles.heading2}
                     />
-                     <TextInput
-                      value = {overallMood}
+                    <TextInput
+                      value = {"Before: " + overallMoodBefore}
+                      editable = {false}
+                      style={stylesProfile.dataField}
+                  />
+                   <TextInput
+                      value = {"After: " + overallMoodAfter}
                       editable = {false}
                       style={stylesProfile.dataField}
                   />
@@ -344,8 +481,6 @@ const Profile = () => {
              
             }
             />
-            </View>
-            </KeyboardAvoidingView>
         )
     }
 
@@ -379,7 +514,6 @@ const stylesProfile = StyleSheet.create({
   },      
     buttonBase: {
         width: "100%",
-        textAlign: "center",
     },
     button: {
         backgroundColor: 'red',//'#6467dc',
@@ -391,5 +525,24 @@ const stylesProfile = StyleSheet.create({
         fontWeight: '500',
         padding: 5,
         paddingBottom: 10,
-    }
+        textAlign: "center",
+    },
+    headingEntry: {
+        paddingTop: 10,
+        fontSize: 20,
+        fontWeight: "500",
+     },
+     entryField: {
+         paddingTop: 5,
+         paddingBottom: 10,
+         fontSize: 20,
+         minHeight: 80,
+     },
+     needsField: {
+       fontSize: 20,
+     },
+     moodField: {
+         fontWeight: "500",
+         fontSize: 20,
+     },
 })

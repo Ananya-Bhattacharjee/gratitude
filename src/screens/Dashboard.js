@@ -14,6 +14,7 @@ import StatusBarHeader from '../components/statusbar';
 import { db, auth } from "../../firebase";
 import { collection, getDocs, where, query, deleteDoc, onSnapshot } from 'firebase/firestore';
 import GratitudeCard from '../components/GratitudeCard';
+import GratitudeCardControl from '../components/GratitudeCardControl';
 
 //import date
 import moment from 'moment'; 
@@ -24,7 +25,17 @@ const Dashboard = (props) => {
 
     const [entries, setEntries] = useState([]);
     const [moods, setMoods] = useState([]);
-    const [overallMood, setOverallMood] = useState(0);
+    const [overallMoodBefore, setOverallMoodBefore] = useState(0);
+    const [overallMoodAfter, setOverallMoodAfter] = useState(0);
+
+    //get user's code
+    const [code, setCode] = useState('');
+    const [members, setMembers] = useState([]);
+
+    //const[metNeeds, setMetNeeds] = useState([])
+    //const[characters, setCharacters] = useState([])
+
+
     //const [mounted, setMounted] = useState(true);
     const [currentDate, setCurrentDate] = useState('')
 
@@ -37,14 +48,17 @@ const Dashboard = (props) => {
         where("date", "==", props.currentDate));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const entriesArray = [];
-            const moodArray = [];
+            const moodArrayBefore = [];
+            const moodArrayAfter = [];
             querySnapshot.forEach((doc) => {
                 entriesArray.push(doc.data()),
-                moodArray.push(doc.data().mood);
+                moodArrayBefore.push(doc.data().moodBefore.count),
+                moodArrayAfter.push(doc.data().moodAfter.count);
             });
             setEntries(entriesArray);
 
-            getOverallMood(moodArray);
+            getOverallMoodBefore(moodArrayBefore);
+            getOverallMoodAfter(moodArrayAfter);
 
             console.log(entriesArray);
 
@@ -56,6 +70,8 @@ const Dashboard = (props) => {
             else {
                 setHeaderTitle(props.currentDate);
             }
+
+            GetMember();
            
         });
         return unsubscribe;
@@ -69,19 +85,22 @@ const Dashboard = (props) => {
   }, [headerTitle, props.navigation]);
     
    
-    const getOverallMood = ( moodArray ) => {
+    const getOverallMoodBefore = ( moodArray ) => {
 
+
+        //Find average of overall mood before 
         //get length of mood array
+        
         var NumberOfMood = moodArray.length;
 
         var totalMood = 0;
 
-        //iterate through moods.
-        console.log(moodArray);
-        console.log(NumberOfMood);
+        //iterate through mood before.
+        //console.log(moodArrayBefore);
+        //console.log(NumberOfMood);
 
         for(let index = 0 ; index < NumberOfMood; index++) {
-            const element = parseInt(moodArray[index]);
+            const element = moodArray[index];
             totalMood = totalMood + element;
         }
         console.log(totalMood);
@@ -91,74 +110,142 @@ const Dashboard = (props) => {
 
         if(NumberOfMood > 0) {
             var averageMood = Math.round(totalMood / NumberOfMood);
-            setOverallMood(averageMood);
+            setOverallMoodBefore(averageMood);
         }   
         else {
-            setOverallMood(0);
+            setOverallMoodBefore(0);
         }
             
    
     }
 
+    const getOverallMoodAfter = ( moodArray ) => {
 
-    const GetEntries = async () => {
+          //Find average of overall mood before 
+        //get length of mood array
+        
+        var NumberOfMood = moodArray.length;
 
+        var totalMood = 0;
+
+        //iterate through mood before.
+        //console.log(moodArrayBefore);
+        //console.log(NumberOfMood);
+
+        for(let index = 0 ; index < NumberOfMood; index++) {
+            const element = moodArray[index];
+            totalMood = totalMood + element;
+        }
+        console.log(totalMood);
+
+        //divide mood values by number of moods.
         
 
-        const today = moment().format("DD/MM/YYYY");
-        //get all entries from firebase for current member
-        //const [currentDate, setCurrentDate] = useState(today);
-
-        //get entries of specific date for currently signed in member 
-        const entriesCol = collection(db, "entries");
-        const memberEntries = query(entriesCol, where("memberEmail", "==", auth.currentUser.email),
-        where("date", "==", today));
-        const entrySnapshot = await getDocs(memberEntries)
-        const entriesArray = [];
-        entrySnapshot.docs.map(doc => 
-            entriesArray.push(doc.data()),
-        );
-
-        setEntries(entriesArray);
-
-        alert(entries);
-        
-
-
+        if(NumberOfMood > 0) {
+            var averageMood = Math.round(totalMood / NumberOfMood);
+            setOverallMoodAfter(averageMood);
+        }   
+        else {
+            setOverallMoodAfter(0);
+        }
     }
 
-    return (
+    
+    //get member profile details
+    const GetMember = async () => {
+
+        //get details of currently signed in user
+        const memberCol = collection(db, "member");
+        const memberDetails = query(memberCol, where("email", "==", auth.currentUser.email));
+        const memberSnapshot = await getDocs(memberDetails);
+        
+        const membersArray = [];
+        memberSnapshot.forEach((doc) => {
+          setCode(doc.data().code)
+          membersArray.push(doc.data()),
+          console.log(code)
+        });
+  
+        /*
+        memberSnapshot.docs.map(doc => 
+            membersArray.push(doc.data()),
+            console.log(members)
+        )*/
+  
+        setMembers(membersArray);
+      
+  
+        //get membercode
+       
+  
+      }
+  
+    if(code=="TRANQUIL") { 
+        return (
    
-        <KeyboardAvoidingView style={styles.flexStyle}>
-            <View style={styles.body}>
-            {/*<Text style={styles.screenTitle}>DASHBOARD</Text>*/}
             
-            {/*<Button title='Get Entries' onPress={GetEntries}/>*/}
-            <FlatList 
-            style={stylesDashboard.flatlist}
-            data={entries}
-            renderItem={({ item }) => (
-                <GratitudeCard entryId={item.entryId} email={item.memberEmail} entryDate={item.date} mood={item.mood} description={item.entryDescription} 
+                //{/*<Text style={styles.screenTitle}>DASHBOARD</Text>*/}
+                
+                //{/*<Button title='Get Entries' onPress={GetEntries}/>*/}
+                <FlatList 
+                //listKey={(item, index) => 'D' + index.toString()}
+                //keyExtractor={(item, index) => index.toString()}
+                style={stylesDashboard.flatlist}
+                data={entries}
+                renderItem={({ item }) => (
+                    <GratitudeCard entryId={item.entryId} email={item.memberEmail} entryDate={item.date} moodBefore={item.moodBefore} moodAfter={item.moodAfter} description={item.entryDescription} 
+                    needs={item.needs} characters={item.characters}/>
+                )}
+                ListHeaderComponent={
+                    <View style={{marginBottom:30, backgroundColor: "#b0caef"}}>
+                    <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
+                    <Text style={styles.heading2}>Average Mood Before: {overallMoodBefore}</Text>
+                    <Text style={styles.heading2}>Average Mood After: {overallMoodAfter}</Text>
+                    </View>
+                }
+                ListFooterComponent={<View style={{minHeight: 500, backgroundColor: "#b0caef"}}/>}
                 />
-            )}
-            ListHeaderComponent={
-                <View style={{marginBottom:30}}>
-                <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
-                <Text style={styles.heading2}>Overall Mood: {overallMood}</Text>
-                </View>
-            }
-            ListFooterComponent={<View style={{minHeight: 160}}/>}
-            />
-            </View>
-        </KeyboardAvoidingView>
-     
-    )
+        
+        )
+    }
+    else {
+        return (
+   
+            <KeyboardAvoidingView style={{backgroundColor: "#b0caef"}}>
+                {/*<Text style={styles.screenTitle}>DASHBOARD</Text>*/}
+                
+                {/*<Button title='Get Entries' onPress={GetEntries}/>*/}
+                <FlatList 
+                //listKey={(item, index) => 'D' + index.toString()}
+                //keyExtractor={(item, index) => index.toString()}
+                style={stylesDashboard.flatlist}
+                data={entries}
+                renderItem={({ item }) => (
+                    <GratitudeCardControl entryId={item.entryId} email={item.memberEmail} entryDate={item.date} moodBefore={item.moodBefore} moodAfter={item.moodAfter} description={item.entryDescription} />
+                )}
+                ListHeaderComponent={
+                    <View style={{marginBottom:30}}>
+                    <Text style={styles.screenTitle}>YOUR ENTRIES</Text>
+                    <Text style={styles.heading2}>Average Mood Before: {overallMoodBefore}</Text>
+                    <Text style={styles.heading2}>Average Mood After: {overallMoodAfter}</Text>
+                    </View>
+                }
+                ListFooterComponent={<View style={{minHeight: 500, backgroundColor: "#b0caef"}}/>}
+                />
+            </KeyboardAvoidingView>
+         
+        )
+    }
+    
+
+    
     
 }
 
 const stylesDashboard = StyleSheet.create({
     flatlist: {
         width: '100%',
+        backgroundColor: "#b0caef"
     }
 })
 

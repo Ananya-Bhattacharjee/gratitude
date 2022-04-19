@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "gratitude-space",
@@ -23,8 +22,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#FFFFFF",
+      },
+      "package": "android.expo.client"
     },
     "web": {
       "favicon": "./assets/favicon.png"

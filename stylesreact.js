@@ -10,17 +10,17 @@ export default StyleSheet.create({
       backgroundColor: '#6467dc',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '2.3em'
+      height: 100
     },
     body: {
       flex: 1,
       backgroundColor: '#b0caef',
-      minHeight: '100vh',
+      minHeight: 1000,
       alignItems: 'center',
     },
     logo: {
-      marginTop: '5em',    
-      marginBottom: '2em',    
+      marginTop: 60,    
+      marginBottom: 10,    
     },
     logoText: {
         marginTop: -20,
@@ -41,7 +41,7 @@ export default StyleSheet.create({
       textAlign: 'center',
     },
     hyperlink: {
-        marginTop: '0.5em',
+        marginTop: 10,
         textDecorationLine: "underline",
         color: 'blue',   
         textAlign: 'center',
@@ -52,10 +52,10 @@ export default StyleSheet.create({
         fontSize: 18,
         color: '#0060ff',
         textAlign: "center",
-        marginLeft: '1em',
-        marginRight: '1em',
+        marginLeft: 10,
+        marginRight: 10,
         fontStyle: 'italic',
-        marginTop: '1em',
+        marginTop: 10,
     },
     quoteAuthor: {
         fontWeight: "bold",
@@ -63,18 +63,19 @@ export default StyleSheet.create({
         textAlign: "center",
         fontStyle: 'italic',
         fontSize: 18,
-        marginTop: '1em',
+        marginTop: 10,
+        marginBottom: 10,
     },
     topField: {
-      marginTop: '1em',
+      marginTop: 10,
     },
     screenTitle: {
-        marginTop: 40,
+        paddingTop: 40,
         color: '#0060ff',
         textAlign: 'center',
-        fontSize: 38,
+        fontSize: 40,
         fontWeight: "400",
-        lineHeight: 35,
+        //lineHeight: 40,
     },
     flexStyle: {
       flex: 1,

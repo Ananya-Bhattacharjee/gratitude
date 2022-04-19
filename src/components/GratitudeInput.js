@@ -22,7 +22,7 @@ const GratitudeInput = ({ value, setValue, placeholder }) => {
 export const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        width: '100%',
+        width: 300,
         borderColor: '#e8e8e8',
         borderWidth: 1,
         borderRadius: 5,

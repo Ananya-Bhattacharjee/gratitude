@@ -16,15 +16,13 @@ import { KeyboardAvoidingView } from 'react-native-web';
 import EditEntry from '../screens/EditEntry';
 import { AuthErrorCodes } from 'firebase/auth';
 
-
-function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentNeeds, description })  {
+//edit button function
+function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, description })  {
 
     
     const [newMoodBefore, setNewMoodBefore] = useState(moodBefore);
     const [newMoodAfter, setNewMoodAfter] = useState(moodAfter);
     const [newDescription, setNewDescription] = useState(description);
-
-    const [needs, setNeeds] = useState(currentNeeds);
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -39,7 +37,6 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentN
             entryDescription: newDescription,
             moodBefore: newMoodBefore,
             moodAfter: newMoodAfter,
-            needs: needs,
           });
 
 
@@ -78,18 +75,7 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentN
             <View style={{marginBottom: 55}}>
             <Dropdown mood={newMoodBefore} setMood={setNewMoodBefore}/>
             </View>
-            <Text 
-            style={{
-              fontSize: 30, 
-              fontWeight: '500',
-              color: '#0060ff',
-              textAlign: 'center',
-              paddingBottom: 10,
-              }}>
-              Met Needs:
-              </Text>
-            <View style={{marginBottom: 55}}>
-            <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
+            <View>
             </View>
             <Text 
             style={{
@@ -107,7 +93,6 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentN
             setValue={setNewDescription}
             placeholder="Write Here..."
             />
-            
             <Text 
             style={{
               fontSize: 30, 
@@ -175,10 +160,7 @@ function DeleteButton({ entryId })  {
 }
 
 //component - card for each gratirude entry
-const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, description, needs, characters}) => {
-
-   console.log("Needs: " + needs);
-   console.log("Characters: " + characters)
+const GratitudeCardControl = ({  entryId, email, entryDate, moodBefore, moodAfter, description}) => {
    
     return (
         <View style={styles.container}>
@@ -198,24 +180,6 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
                 editable = {false}
                 style={styles.moodField}
             />
-             <FlatList 
-            //keyExtractor={(item, index) => index.toString()}
-            listKey={(item, index) => 'M' + index.toString()}
-            data={needs}
-            renderItem={({ item }) => (
-              <TextInput
-              multiline = {true}
-              value = {"- " + item.item}
-              editable = {false}
-              style={styles.needsField}
-              />
-            )}
-            ListHeaderComponent={
-                <View>
-                <Text style={styles.headingEntry}>Met Needs:</Text>
-                </View>
-            }
-            />
             <Text style={styles.headingEntry}>Your Entry:</Text>
             <TextInput
                 multiline = {true}
@@ -230,7 +194,6 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
                 moodBefore={moodBefore}
                 moodAfter={moodAfter}
                 description={description}
-                currentNeeds={needs}
             />
             <DeleteButton
                  entryId={entryId}
@@ -241,7 +204,7 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
     )
 }
 
-export default GratitudeCard;
+export default GratitudeCardControl;
 
 const styles = StyleSheet.create({
     headingEntry: {

@@ -27,8 +27,8 @@ const Create = (props) => {
      const [code, setCode] = useState('');
     
     //const entryId = '';
-    const [newMoodBefore, setMoodBefore] = useState('1');
-    const [newMoodAfter, setMoodAfter] = useState('');
+    const [newMoodBefore, setMoodBefore] = useState({});
+    const [newMoodAfter, setMoodAfter] = useState({});
     const [needs, setNeeds] = useState([]);
     const [characters, setCharacters] = useState([]);
     const [newEntry, setEntry] = useState('');
@@ -58,8 +58,11 @@ const Create = (props) => {
         }
         await setDoc(newEntryRef,payload);
         
-        setMoodBefore('1');
-        setMoodAfter('1');
+        //clear data after submission
+        setMoodBefore({});
+        setMoodAfter({});
+        setNeeds([]);
+        setCharacters([]);
         setEntry('');
 
 
@@ -87,21 +90,23 @@ const Create = (props) => {
     if(code=="TRANQUIL") {
 
         console.log("EXPERIMENTAL");
-        return (
-            <ScrollView>
-            <View style={styles.body}>
+        return (            
+            <ScrollView style={stylesCreate.scrollStyle}
+            nestedScrollEnabled={true}>
+            <View style={styles.body}>    
             <View style={stylesCreate.createForm}>
-            <Text style={styles.screenTitle}>CREATE NEW<br/>ENTRY</Text>
+            <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
             <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
-            <Dropdown newMood={newMoodBefore} setMood={setMoodAfter}/>
+            <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
             <Text style={stylesCreate.label}>Met Needs</Text>
             <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
+            {/*
             <Text style={stylesCreate.label}>Character Strengths</Text>
-            <CharacterMenu selectedCharacters={characters} setSelectedCharacters={setCharacters}/>
+        <CharacterMenu selectedCharacters={characters} setSelectedCharacters={setCharacters}/>*/}
             <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
             <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
             <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
-            <Dropdown newMood={newMoodAfter} setMood={setMoodAfter}/>
+            <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
             <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
             </View>
             </View>
@@ -111,20 +116,23 @@ const Create = (props) => {
     else { //control condition
         console.log("CONTROL");
         return (
-            <ScrollView style={stylesCreate.scrollStyle}>
+           
+            <ScrollView style={stylesCreate.scrollStyle}
+            nestedScrollEnabled={true}>
             <View style={styles.body}>
             <View style={stylesCreate.createForm}>
-            <Text style={styles.screenTitle}>CREATE NEW<br/>ENTRY</Text>
+            <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
             <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
-            <Dropdown newMood={newMoodBefore} setMood={setMoodBefore}/>
+            <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
             <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
             <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
             <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
-            <Dropdown newMood={newMoodAfter} setMood={setMoodAfter}/>
+            <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
             <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
             </View>
             </View>
             </ScrollView>
+            
         )
     }
 
@@ -138,7 +146,7 @@ const stylesCreate = StyleSheet.create({
         color: '#0060ff',
         fontWeight: "400",
         textAlign: 'left',
-        marginTop: 20,
+        paddingTop: 10,
     },
     gratitudeField: {
         minHeight: 500,
@@ -146,10 +154,11 @@ const stylesCreate = StyleSheet.create({
     createForm: {
         display: 'flex',
         flexWrap: 'wrap',
-        alignContent: 'center',
-        alignSelf: 'center',
-        marginBottom: 110,
+        //alignContent: 'center',
+        //alignSelf: 'center',
+        //marginBottom: 110,
     },
     scrollStyle: {
+        backgroundColor: '#b0caef',
     }
 })

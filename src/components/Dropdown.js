@@ -6,36 +6,43 @@ import { xorBy } from 'lodash'
 const K_OPTIONS = [
     {
       item: 'Very Low Mood - 1',
+      count: 1,
       id: '1',
     },
     {
       item: 'Low Mood - 2',
+      count: 2,
       id: '2',
     },
     {
       item: 'Neutral - 3',
+      count: 3,
       id: '3',
     },
     {
       item: 'Good Mood - 4',
+      count: 4,
       id: '4',
     },
     {
       item: 'Very Good Mood - 5',
+      count: 5,
       id: '5',
     },
   ]
 
-const Dropdown = ( {newMood, setMood }) => {
+const Dropdown = ( {mood, setMood }) => {
 
     //const [selectedTeam, setSelectedTeam] = useState({})
     //const [selectedTeams, setSelectedTeams] = useState([])
 
 
-    const [selectedMood, setSelectedMood] = useState({})
+    //const [selectedMood, setSelectedMood] = useState({})
 
+    /*
     useEffect(() => {
         
+       
         if(selectedMood.id == '1') {
             setMood('1')
         }
@@ -53,16 +60,16 @@ const Dropdown = ( {newMood, setMood }) => {
             setMood('5')
         }
 
-    },[selectedMood])
+    },[selectedMood])*/
     
 
     return (
         
-        <View style={{marginTop: 10}}>
+        <View style={{marginTop: 10, width: 300}}>
         <SelectBox
             label="Select single"
             options={K_OPTIONS}
-            value={selectedMood}
+            value={mood}
             onChange={onChange()}
             hideInputFilter={true}
             containerStyle={{
@@ -74,6 +81,7 @@ const Dropdown = ( {newMood, setMood }) => {
                 color: 'black',
                 marginLeft: 10,
                 fontSize: 15,
+                width: "100%",
             }}
             listEmptyLabelStyle={{ //style for SELECT text
                 marginLeft: 10,
@@ -108,7 +116,7 @@ const Dropdown = ( {newMood, setMood }) => {
     )
     
       function onChange() {
-        return (val) => setSelectedMood(val)
+        return (val) => setMood(val)
       }
     
 }

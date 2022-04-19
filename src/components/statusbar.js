@@ -17,6 +17,6 @@ export default function StatusBarHeader({ text, onPress }) {
         backgroundColor: '#6467dc',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '2.3em'
+        height: 100,
       },
   })
