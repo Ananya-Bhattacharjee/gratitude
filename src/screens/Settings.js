@@ -1,5 +1,5 @@
 import React from 'react';
-import {KeyboardAvoidingView, View, Text, TextInput, StyleSheet} from 'react-native'
+import {KeyboardAvoidingView, View } from 'react-native'
 import styles from "../../stylesreact"
 
 //firebase
@@ -8,9 +8,6 @@ import { signOut } from "firebase/auth";
 
 //Logout button
 import LogoutButton from '../components/LogoutButton'
-
-//import components
-import StatusBarHeader from '../components/statusbar'
 
 
 const Settings = () => {
@@ -27,12 +24,12 @@ const Settings = () => {
     }
 
     return (
-        <KeyboardAvoidingView>
+        <View>
         <View style={styles.body}>
         {/*<Text style={styles.screenTitle}>SETTINGS</Text>*/}
         <LogoutButton onPress={SignOutUser}/>
         </View>
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 

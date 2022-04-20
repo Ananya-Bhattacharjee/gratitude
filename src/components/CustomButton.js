@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable, TouchableOpacity, TextInput } from 'react-native';
-
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function customButton({ text, onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disallowInterruption={true}>
       <View style={styles.button}>
         <Text style={styles.buttonText}>{ text }</Text>
       </View>

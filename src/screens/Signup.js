@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView,StyleSheet, Button, Text, View, Linking } from 'react-native';
+import { KeyboardAvoidingView,StyleSheet, Text, View } from 'react-native';
 import styles from "../../stylesreact"
 //import {Link } from 'react-router-dom';
 import { auth } from '../../firebase';
@@ -11,12 +11,11 @@ import { useNavigation } from '@react-navigation/core';
 import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
 import CustomTextInput from '../components/CustomTextInput'
-import stylesreact from '../../stylesreact';
 
 //firebase
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from "../../firebase";
-import { doc, addDoc, setDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, collection } from 'firebase/firestore';
 
 const SignUp = () => {
 

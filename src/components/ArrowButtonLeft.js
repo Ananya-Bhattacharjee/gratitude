@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ArrowButtonLeft({ text, onPress }) {
 

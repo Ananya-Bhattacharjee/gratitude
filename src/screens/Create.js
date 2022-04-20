@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, StyleSheet, Alert, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native'
 import styles from "../../stylesreact"
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 
 //import components
-import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
 import GratitudeInput from '../components/GratitudeInput'
 import Dropdown from '../components/Dropdown'
 import MetNeedsMenu from '../components/MetNeedsMenu'
-import CharacterMenu from '../components/CharacterMenu'
 
 //import firebase
 import { db, auth } from "../../firebase";
-import { addDoc, collection, doc, setDoc, onSnapshot, where, getDocs, query } from 'firebase/firestore';
+import { collection, doc, setDoc, onSnapshot, where, query } from 'firebase/firestore';
 
 //import date
 import moment from 'moment'; 
 
-const Create = (props) => {
-
-    const today = moment().format("DD/MM/YYYY");
-    const [members, setMembers] = useState([]);
+const Create = () => {
 
      //code to incidicate whether participant is in control or experimental group.
      const [code, setCode] = useState('');
@@ -91,47 +88,44 @@ const Create = (props) => {
 
         console.log("EXPERIMENTAL");
         return (            
-            <ScrollView style={stylesCreate.scrollStyle}
-            nestedScrollEnabled={true}>
-            <View style={styles.body}>    
-            <View style={stylesCreate.createForm}>
-            <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
-            <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
-            <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
-            <Text style={stylesCreate.label}>Met Needs</Text>
-            <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
-            {/*
-            <Text style={stylesCreate.label}>Character Strengths</Text>
-        <CharacterMenu selectedCharacters={characters} setSelectedCharacters={setCharacters}/>*/}
-            <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
-            <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
-            <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
-            <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
-            <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
-            </View>
-            </View>
-            </ScrollView>
+            <FlatList style={stylesCreate.scrollStyle}
+            listKey={(item, index) => 'createEX' + index.toString()}
+            ListHeaderComponent={
+                <View style={stylesCreate.createForm}>
+                <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
+                <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
+                <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
+                <Text style={stylesCreate.label}>Met Needs</Text>
+                <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
+                <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
+                <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
+                <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
+                <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
+                <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
+                </View>
+            }
+            >
+            </FlatList>
         )
     }
     else { //control condition
         console.log("CONTROL");
         return (
            
-            <ScrollView style={stylesCreate.scrollStyle}
-            nestedScrollEnabled={true}>
-            <View style={styles.body}>
-            <View style={stylesCreate.createForm}>
-            <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
-            <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
-            <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
-            <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
-            <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
-            <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
-            <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
-            <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
-            </View>
-            </View>
-            </ScrollView>
+            <FlatList style={stylesCreate.scrollStyle}
+            ListHeaderComponent={
+                <View style={stylesCreate.createForm}>
+                <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
+                <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
+                <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
+                <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
+                <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
+                <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
+                <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
+                <CustomButton text='CREATE' onPress={addEntry}></CustomButton>
+                </View>
+            }
+            />
             
         )
     }
@@ -152,13 +146,15 @@ const stylesCreate = StyleSheet.create({
         minHeight: 500,
     },
     createForm: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        //display: 'flex',
+        //flexWrap: 'wrap',
+        //height: 1500,
         //alignContent: 'center',
-        //alignSelf: 'center',
-        //marginBottom: 110,
+        alignSelf: 'center',
+        marginBottom: 110,
     },
     scrollStyle: {
         backgroundColor: '#b0caef',
+        flex: 1,
     }
 })

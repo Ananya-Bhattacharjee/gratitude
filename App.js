@@ -6,6 +6,8 @@ import styles from "./stylesreact"
 
 import { auth } from './firebase';
 
+import { LogBox } from 'react-native';
+
 
 //import screens
 import Launch from './src/screens/Launch';
@@ -25,6 +27,11 @@ const Stack = createNativeStackNavigator();
 //declare class app
 const App = () => {
 
+
+    //hide console warnings
+    LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
+
+    LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
 
     const [isSignedIn, setIsSignedIn] = useState(false);
 

@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, StyleSheet, ScrollView, FlatList, Modal, TouchableOpacity, Button, Pressable, Alert} from 'react-native'
+import React, { useState } from 'react';
+import {View, Text, TextInput, StyleSheet, ScrollView, FlatList, Modal, Pressable, Alert, TouchableOpacity } from 'react-native'
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 //import components
-import CustomTextInput from './CustomTextInput'
 import GratitudeInput from './GratitudeInput'
 import Dropdown from './Dropdown'
 import MetNeedsMenu from './MetNeedsMenu'
-import CharacterMenu from './CharacterMenu'
+
 
 
 //import from firebase
-import { db, auth } from "../../firebase";
-import { collection, getDocs, where, query, doc, deleteDoc, setDoc } from 'firebase/firestore';
-import { KeyboardAvoidingView } from 'react-native-web';
-import EditEntry from '../screens/EditEntry';
-import { AuthErrorCodes } from 'firebase/auth';
+import { db } from "../../firebase";
+import { doc, deleteDoc, setDoc } from 'firebase/firestore';
 
 
 function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentNeeds, description })  {
@@ -246,21 +243,25 @@ export default GratitudeCard;
 const styles = StyleSheet.create({
     headingEntry: {
        paddingTop: 10,
-       fontSize: 20,
+       fontSize: 25,
        fontWeight: "500",
+       color: '#000000',
     },
     entryField: {
         paddingTop: 5,
         paddingBottom: 10,
         fontSize: 20,
         minHeight: 80,
+        color: '#000000',
     },
     needsField: {
       fontSize: 20,
+      color: '#000000',
     },
     moodField: {
         fontWeight: "500",
         fontSize: 20,
+        color: '#000000',
     },
     container: {
         backgroundColor: 'white',
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
         width: 150,
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '10',
+        marginTop: 10,
         marginBottom: 5,
       },
       deletebutton: {
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
         width: 150,
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: '10',
+        marginTop: 10,
         marginBottom: 5,
       },
       buttonText: {

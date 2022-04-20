@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react'
-import { Text, View } from 'react-native'
+import React from 'react'
+import { View } from 'react-native'
 import SelectBox from 'react-native-multi-selectbox'
 import { xorBy } from 'lodash'
 
@@ -39,11 +39,8 @@ const K_OPTIONS = [
 
 const MetNeedsMenu = ({ selectedNeeds, setSelectedNeeds }) => {
 
-  //const [selectedNeeds, setSelectedNeeds] = useState([])
-
   return (
-    <View>
-      <View />
+    <View style={{ marginBottom: 20}}>
       <SelectBox
         width={300}
         label="Select multiple"

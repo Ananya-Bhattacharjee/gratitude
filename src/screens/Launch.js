@@ -1,9 +1,6 @@
-import React, {Component} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Button, Text, View, Linking } from 'react-native';
-import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
+import React from 'react';
+import { KeyboardAvoidingView, Text, View } from 'react-native';
 import styles from "../../stylesreact"
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { useNavigation } from '@react-navigation/core';
 
@@ -18,7 +15,7 @@ function Launch() {
     
     return (
   
-      <KeyboardAvoidingView>
+      <View>
      
      <StatusBarHeader/>
       <View style={styles.body}>
@@ -33,13 +30,14 @@ function Launch() {
         onPress={() => navigation.navigate('Login')}
         style={styles.hyperlink}
         adjustsFontSizeToFit
+        disallowInterruption={true}
         >
           Already have an account? Sign In
         </Text>
       </View>
       
      
-      </KeyboardAvoidingView>
+      </View>
     )
     }
   

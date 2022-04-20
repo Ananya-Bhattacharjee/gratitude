@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Button} from 'react-native'
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native'
 
 //navigation modules
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//navigation
-import { useNavigation } from '@react-navigation/core';
-
-//import components
-import LogoutButton from './LogoutButton'
 import ArrowButtonLeft from './ArrowButtonLeft'
 import ArrowButtonRight from './ArrowButtonRight'
 
-//firebase
-import { auth } from '../../firebase';
-
-
 
 //icons modules
-import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 
 //import screens
@@ -28,7 +19,6 @@ import Dashboard from '../screens/Dashboard'
 import Create from '../screens/Create'
 import Profile from '../screens/Profile'
 import Settings from '../screens/Settings'
-import { withOrientation } from 'react-navigation';
 
 //import date
 import moment from 'moment'; 

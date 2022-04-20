@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Button, Text, View, Linking } from 'react-native';
+import { KeyboardAvoidingView, Text, View } from 'react-native';
 import styles from "../../stylesreact"
-//import {Link } from 'react-router-dom';
 
 //firebase
 import { auth } from '../../firebase';
@@ -42,7 +41,7 @@ const Login = () => {
 
       return (
           
-          <KeyboardAvoidingView>
+          <View>
            <StatusBarHeader/>
            <View style={styles.body}>
           <View style={styles.logo}>
@@ -56,11 +55,12 @@ const Login = () => {
         onPress={() => navigation.navigate('Signup')}
         style={styles.hyperlink}
         adjustsFontSizeToFit
+        disallowInterruption={true}
         >
           Don't have an account? Create account
         </Text>
       </View>
-      </KeyboardAvoidingView>
+      </View>
       )
   }
   

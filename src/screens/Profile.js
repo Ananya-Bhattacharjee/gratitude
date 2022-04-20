@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {KeyboardAvoidingView, View, Text, TextInput, StyleSheet, Button, FlatList, TouchableOpacity, ScrollView} from 'react-native'
+import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native'
+import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../../stylesreact"
 
-
-//import components
-import StatusBarHeader from '../components/statusbar'
 
 //import firebase
 import { db, auth } from "../../firebase";
 import { signOut, deleteUser } from "firebase/auth";
-import { setDoc, collection, where, getDocs, doc, query, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, where, getDocs, doc, query, deleteDoc, onSnapshot } from 'firebase/firestore';
 
 
 const SignOutUser = () => {
@@ -26,7 +24,6 @@ const SignOutUser = () => {
 
 function DeleteButton()  {
 
-    //const member = memberId;
 
     //deletes account of currently signed in user.
 
@@ -93,12 +90,9 @@ function DeleteButton()  {
 
 const Profile = () => {
 
-    //const [memberId, setMemberId] = useState('');
-    //const [email, setEmail] = useState('');
-    //const [code, setCode] = useState('');
+
 
     const [members, setMembers] = useState([]);
-    //const [mounted, setMounted] = useState(true);
     
   
 
@@ -121,27 +115,37 @@ const Profile = () => {
     const [overallMoodAfter, setOverallMoodAfter] = useState(0);
 
     useEffect(() => {
+        GetMember();
+
         const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const entriesArray = [];
             const moodArrayBefore = [];
             const moodArrayAfter = [];
-            const needsArray = [];
-            querySnapshot.forEach((doc) => {
-                entriesArray.push(doc.data()),
-                moodArrayBefore.push(doc.data().moodBefore.count);
-                moodArrayAfter.push(doc.data().moodAfter.count);
-                needsArray.push(doc.data().needs)
-            });
-            setEntries(entriesArray);
-
-            console.log("Needs Array:" + needsArray);
-
-            countNeeds(needsArray)
-
+            if(code=="TRANQUIL") {
+                const needsArray = [];
+                querySnapshot.forEach((doc) => {
+                    entriesArray.push(doc.data()),
+                    moodArrayBefore.push(doc.data().moodBefore.count);
+                    moodArrayAfter.push(doc.data().moodAfter.count);
+                    needsArray.push(doc.data().needs)
+                    setEntries(entriesArray);
+                    console.log("Needs Array:" + needsArray);
+                    countNeeds(needsArray)
+                });
+            }
+            else {
+                querySnapshot.forEach((doc) => {
+                    entriesArray.push(doc.data()),
+                    moodArrayBefore.push(doc.data().moodBefore.count);
+                    moodArrayAfter.push(doc.data().moodAfter.count);
+                    setEntries(entriesArray);
+                });
+            }
+         
             getOverallMoodBefore(moodArrayBefore);
             getOverallMoodAfter(moodArrayAfter);
-            GetMember();
+           
         });
         return unsubscribe;
     }, []);
@@ -499,6 +503,7 @@ const stylesProfile = StyleSheet.create({
       fontWeight: "500",
       fontSize: 20,
       textAlign: 'center',
+      color: '#000000',
   },
   container: {
       backgroundColor: 'white',

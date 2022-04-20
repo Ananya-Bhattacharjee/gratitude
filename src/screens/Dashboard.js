@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {KeyboardAvoidingView, View, Text, TextInput, StyleSheet, Button, FlatList, ScrollView, 
-    ActivityIndicator} from 'react-native';
+import {KeyboardAvoidingView, View, Text, StyleSheet, FlatList} from 'react-native';
 import styles from "../../stylesreact";
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import CustomButton from '../components/CustomButton'
-
-
-
 //import components
-import StatusBarHeader from '../components/statusbar';
 import { db, auth } from "../../firebase";
-import { collection, getDocs, where, query, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, where, query, onSnapshot } from 'firebase/firestore';
 import GratitudeCard from '../components/GratitudeCard';
 import GratitudeCardControl from '../components/GratitudeCardControl';
 
@@ -24,7 +16,6 @@ const Dashboard = (props) => {
 
 
     const [entries, setEntries] = useState([]);
-    const [moods, setMoods] = useState([]);
     const [overallMoodBefore, setOverallMoodBefore] = useState(0);
     const [overallMoodAfter, setOverallMoodAfter] = useState(0);
 
@@ -32,12 +23,6 @@ const Dashboard = (props) => {
     const [code, setCode] = useState('');
     const [members, setMembers] = useState([]);
 
-    //const[metNeeds, setMetNeeds] = useState([])
-    //const[characters, setCharacters] = useState([])
-
-
-    //const [mounted, setMounted] = useState(true);
-    const [currentDate, setCurrentDate] = useState('')
 
     const today = moment().format("DD/MM/YYYY");
 
@@ -210,11 +195,6 @@ const Dashboard = (props) => {
     }
     else {
         return (
-   
-            <KeyboardAvoidingView style={{backgroundColor: "#b0caef"}}>
-                {/*<Text style={styles.screenTitle}>DASHBOARD</Text>*/}
-                
-                {/*<Button title='Get Entries' onPress={GetEntries}/>*/}
                 <FlatList 
                 //listKey={(item, index) => 'D' + index.toString()}
                 //keyExtractor={(item, index) => index.toString()}
@@ -232,7 +212,6 @@ const Dashboard = (props) => {
                 }
                 ListFooterComponent={<View style={{minHeight: 500, backgroundColor: "#b0caef"}}/>}
                 />
-            </KeyboardAvoidingView>
          
         )
     }

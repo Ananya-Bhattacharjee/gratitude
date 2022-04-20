@@ -1,7 +1,6 @@
-import React, { useState, useEffect} from 'react';
-import { View, Text, Picker, StyleSheet } from 'react-native'
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native'
 import SelectBox from 'react-native-multi-selectbox'
-import { xorBy } from 'lodash'
 
 const K_OPTIONS = [
     {
@@ -33,40 +32,13 @@ const K_OPTIONS = [
 
 const Dropdown = ( {mood, setMood }) => {
 
-    //const [selectedTeam, setSelectedTeam] = useState({})
-    //const [selectedTeams, setSelectedTeams] = useState([])
 
-
-    //const [selectedMood, setSelectedMood] = useState({})
-
-    /*
-    useEffect(() => {
-        
-       
-        if(selectedMood.id == '1') {
-            setMood('1')
-        }
-        else if(selectedMood.id == "2") {
-            setMood('2')
-        }
-        else if(selectedMood.id == "3") {
-            setMood('3')
-        }
-        else if(selectedMood.id == "4") {
-            setMood('4')
-        }
-        else {
-            console.log(selectedMood.id);
-            setMood('5')
-        }
-
-    },[selectedMood])*/
-    
 
     return (
         
-        <View style={{marginTop: 10, width: 300}}>
+        <View style={{marginTop: 10, width: 300, marginBottom: 10 }}>
         <SelectBox
+            listKey={(item, index) => 'selectBox' + index.toString()}
             label="Select single"
             options={K_OPTIONS}
             value={mood}
@@ -93,25 +65,11 @@ const Dropdown = ( {mood, setMood }) => {
                 fontSize: 15,
                 color: '#0060ff',
             }}
+            scrollViewProps={{
+              nestedScrollEnabled: true,
+         }}
         />
         </View>
-
-
-        /*
-        <Picker
-        value = {newMood}
-        onValueChange={(itemValue, itemIndex) => 
-            setMood(itemValue)
-        }
-        style={styles.picker}
-        itemStyle={styles.pickerItem}
-        >
-        <Picker.Item label="Very Low Mood - 1" value="1" />
-        <Picker.Item label="Low Mood - 2" value="2" />
-        <Picker.Item label="Neutral - 3" value="3" />
-        <Picker.Item label="Good Mood - 4" value="4" />
-        <Picker.Item label="Very Good Mood - 5" value="5" />
-    </Picker>*/
 
     )
     

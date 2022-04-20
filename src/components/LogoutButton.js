@@ -1,13 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
-import { withOrientation } from 'react-navigation';
-
-import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 function LogoutButton({ onPress }) {
   return (
-    <TouchableOpacity style={styles.buttonBase} onPress={onPress}>
+    <TouchableOpacity style={styles.buttonBase} onPress={onPress} disallowInterruption={true}>
       <View style={styles.button}>
         <Text style={styles.buttonText}>Logout</Text>
       </View>

@@ -1,6 +1,5 @@
-import { CurrentRenderContext } from '@react-navigation/native';
-import React, {component} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native'
+import React from 'react';
+import {View, TextInput, StyleSheet} from 'react-native'
 
 const CustomTextInput = ({ value, setValue, placeholder, secureTextEntry }) => {
     return (

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet} from 'react-native'
 import styles from "../../stylesreact"
 
 
 //import components
-import StatusBarHeader from '../components/statusbar'
 import CustomButton from '../components/CustomButton'
 import GratitudeInput from '../components/GratitudeInput'
 import Dropdown from '../components/Dropdown'
@@ -16,7 +15,7 @@ import { setDoc, collection } from 'firebase/firestore';
 //import date
 import moment from 'moment'; 
 
-const EditEntry = ({ entryId }) => {
+const EditEntry = () => {
 
     const [newMood, setMood] = useState('');
     const [newEntry, setEntry] = useState('');
