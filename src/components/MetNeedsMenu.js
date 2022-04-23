@@ -34,6 +34,10 @@ const K_OPTIONS = [
   {
     item: 'Meaning / Fulfillment',
     id: '7',
+  },
+  {
+    item: 'Others',
+    id: '8',
   }
 ]
 

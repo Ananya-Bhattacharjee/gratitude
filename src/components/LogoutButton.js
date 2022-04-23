@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#6467dc',
-    marginTop: 20,
+    marginTop: 30,
   },
   buttonText: {
     fontSize: 25,

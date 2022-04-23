@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView,StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import styles from "../../stylesreact"
-//import {Link } from 'react-router-dom';
 import { auth } from '../../firebase';
 
 import { useNavigation } from '@react-navigation/core';
@@ -17,6 +16,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from "../../firebase";
 import { doc, setDoc, collection } from 'firebase/firestore';
 
+
+
 const SignUp = () => {
 
     const [newEmail, setEmail] = useState('');
@@ -29,18 +30,19 @@ const SignUp = () => {
     //sign up function
     const RegisterUser = () => {
 
-      if(newCode== "PEACE" || newCode=="TRANQUIL") {
+      if(newCode=="PEACE" || newCode=="TRANQUIL") {
         createUserWithEmailAndPassword(auth, newEmail, newPassword)
         .then((result)=>{
-  
           console.log(result);
           addMember();
-          setIsSignedIn(true);
+          alert("Successfully Signed Up");
         })
         .catch((result)=> {
           console.log(result);
-          console.log('Email already exists.');
-          alert('Email already exists. Please try again.')
+          alert("Email already exists. Please try again.");
+          setEmail('');
+          setPassword('');
+          setCode('');
         })
       }
       else {
@@ -68,7 +70,7 @@ const SignUp = () => {
      
       return (
           
-          <KeyboardAvoidingView>
+          <View>
             <StatusBarHeader/>
             <View style={styles.body}>
           <View style={styles.logo}>
@@ -89,7 +91,7 @@ const SignUp = () => {
         </Text>
       </View>
            
-        </KeyboardAvoidingView>
+        </View>
       )
   }
   export default SignUp;

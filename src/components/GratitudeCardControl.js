@@ -171,7 +171,7 @@ const GratitudeCardControl = ({  entryId, email, entryDate, moodBefore, moodAfte
                 editable = {false}
                 style={styles.moodField}
             />
-            <Text style={styles.headingEntry}>Your Entry:</Text>
+            <Text style={styles.headingEntry}>What are you grateful for?</Text>
             <TextInput
                 multiline = {true}
                 value = {description}

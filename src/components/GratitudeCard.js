@@ -213,7 +213,7 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
                 </View>
             }
             />
-            <Text style={styles.headingEntry}>Your Entry:</Text>
+            <Text style={styles.headingEntry}>What are you grateful for?</Text>
             <TextInput
                 multiline = {true}
                 value = {description}
