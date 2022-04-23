@@ -19,7 +19,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //import from firebase
 import { db } from "./firebase";
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, query, where, getDocs, collection } from 'firebase/firestore';
 
 //tab module
 import BottomTabs from './src/components/BottomTab'
@@ -27,6 +27,7 @@ import BottomTabs from './src/components/BottomTab'
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -40,48 +41,116 @@ Notifications.setNotificationHandler({
   }),
 });
 
+//define global variable
+let notificationEmail = "";
+
 //declare class app
+
+
+
+
 const App = () => {
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setIsSignedIn(true);
+
+      }
+      else {
+        setIsSignedIn(false);
+      }
+      
+
+      return unsubscribe;
+    })
+  
+
+  })   
+
+
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
 
-
     const [reminderHour, setReminderHour] = useState('00');
     const [reminderMinutes, setReminderMinutes] = useState('00');
 
     const [isEnabled, setIsEnabled] = useState(false);
-    const [notifId, setNotifId] = useState('');
+    //const [notifId, setNotifId] = useState('');
 
-    useEffect(() => {
+    const [hourString, setHourString] = useState('');
+    const [minutesString, setMinutesString] = useState('');
+  
+    const [reminderId, setReminderId] = useState('reminder');
 
-        const unsubscribe = onSnapshot(doc(db, "reminder", "reminder"), (doc) => {
-          //console.log("Current data: ", doc.data());
-          console.log("Reminder set")
-          const docReminder = doc.data();
-          setReminderHour(docReminder.hour);
-          setReminderMinutes(docReminder.minutes);
-          setIsEnabled(docReminder.isEnabled);
+    const [reminderMounted, setReminderMounted] = useState(false);
 
-          if(isEnabled) {
-            var notifyUser = schedulePushNotification(reminderHour, reminderMinutes);
-            setNotifId(notifyUser);
-           }
-           if(!isEnabled) {
-             cancelNotification(notifId)
-           }
-        });
-        return unsubscribe;
+    
+
+    
+     //gets reminder on component mount
+      useEffect(() => {
+
+          if(isSignedIn) {
+            notificationEmail = auth.currentUser.email;
+          }
+          else {
+            notificationEmail = "";
+          }
+
+          const q = query(collection(db, "reminder"), where("reminderEmail", "==", notificationEmail));
+        
+          console.log("working now");
+  
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              querySnapshot.docChanges().forEach(change => {
+  
+                const docReminder = doc.data();
+  
+                //set time text
+                setHourString(docReminder.hour);
+                setMinutesString(docReminder.minutes);
+      
+                //set integer time
+                const hourValue = parseInt(docReminder.hour);
+                const minutesValue = parseInt(docReminder.minutes);
+                
+                setReminderHour(hourValue);
+                setReminderMinutes(minutesValue);
+                setIsEnabled(docReminder.isEnabled);
+  
+                console.log("reminders set. Notification ready");
+  
+              });
+  
+  
+          });
+          return unsubscribe;
+          });
+
+      
     }, [])
 
-    //function to get reminder
-    const getReminder = async () => {
-      //const docRef = doc(db, "reminder", "reminder");
-      //const docSnap = await getDoc(docRef);
+    useEffect(async () => {
 
-      const docReminder = db.collection('')
-     
+      if(isEnabled) {
+        var notifyUser = schedulePushNotification(reminderHour, reminderMinutes, hourString, minutesString);
+        console.log("Notification Scheduled: " + notifyUser);
+        console.log("Notification scheduled at " + hourString + ":" + minutesString);
+       }
+       //if(!isEnabled) {
+        //Notifications.cancelAllScheduledNotificationsAsync()
+       //}
+    }, [reminderHour, reminderMinutes, isEnabled])
+
+    /*
+    useEffect(async () => {
+
+      const docRef = doc(db, "reminder", reminderId);
+      const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
@@ -90,13 +159,62 @@ const App = () => {
         console.log("No such document!");
       }
 
-      setReminderHour(docSnap.hour);
-      setReminderMinutes(docSnap.minutes);
-      setIsEnabled(docSnap.isEnabled);
+       //set time text
+       setHourString(docSnap.hour);
+       setMinutesString(docSnap.minutes);
 
-    }
+       //set integer time
+       const hourValue = parseInt(docSnap.hour);
+       const minutesValue = parseInt(docSnap.minutes);
+       
+       setReminderHour(hourValue);
+       setReminderMinutes(minutesValue);
+       setIsEnabled(docSnap.isEnabled);
 
+       if(isEnabled) {
+         var notifyUser = schedulePushNotification(reminderHour, reminderMinutes, hourString, minutesString);
+         setNotifId(notifyUser);
+         console.log("Notification scheduled: " + notifyUser);
+        }
+        if(!isEnabled) {
+         Notifications.cancelAllScheduledNotificationsAsync()
+        }
 
+    }, [])*/
+
+    /*
+    useEffect(() => {
+
+        const unsubscribe = onSnapshot(doc(db, "reminder", reminderId), (doc) => {
+          //console.log("Current data: ", doc.data());
+
+          console.log("Reminder set")
+          const docReminder = doc.data();
+
+          //set time text
+          setHourString(docReminder.hour);
+          setMinutesString(docReminder.minutes);
+
+          //set integer time
+          const hourValue = parseInt(docReminder.hour);
+          const minutesValue = parseInt(docReminder.minutes);
+          
+          setReminderHour(hourValue);
+          setReminderMinutes(minutesValue);
+          setIsEnabled(docReminder.isEnabled);
+
+          if(isEnabled) {
+            var notifyUser = schedulePushNotification(reminderHour, reminderMinutes, hourString, minutesString);
+            console.log("Notification Scheduled: " + notifyUser);
+           }
+           if(!isEnabled) {
+            Notifications.cancelAllScheduledNotificationsAsync()
+           }
+        });
+        return unsubscribe;
+    }, [])*/
+
+    
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
   
@@ -121,22 +239,14 @@ const App = () => {
 
     //LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
 
+ 
     const [isSignedIn, setIsSignedIn] = useState(false);
-
     
-    useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-          setIsSignedIn(true);
-        }
-        else {
-          setIsSignedIn(false);
-        }
-        return unsubscribe;
-      })
-    })
-
+  
     if(isSignedIn===true) {
+
+     
+
       return (
         <BottomTabs/>
       )}
@@ -179,6 +289,7 @@ const App = () => {
 
 export default App;
 
+
 async function registerForPushNotificationsAsync() {
   let token;
   if (Device.isDevice) {
@@ -211,27 +322,21 @@ async function registerForPushNotificationsAsync() {
 }
 
 //function to schedule daily gratitude reminder
-async function schedulePushNotification(hours, minutes) {
+async function schedulePushNotification(hours, minutes, hourString, minutesString) {
   const id = await Notifications.scheduleNotificationAsync({
     content: {
-      title: "Daily Reminder",
-      body: "What are you grateful for today",
+      title: "Daily Reminder:" + hourString + ":" + minutesString,
+      body: "What are you grateful for today?",
       sound: 'default',
     },
     trigger: {
-      //hour: hours,
-      //minute: minutes,
-      //repeats: true,
-      seconds: 1,
+      hour: hours,
+      minute: minutes,
+      repeats: true,
     },
   });
   console.log("notif id on scheduling",id)
   console.log("Hours: " + hours);
   console.log("Minutes: " + minutes);
   return id;
-}
-
-//function to cancel daily gratitude reminder.
-export async function cancelNotification(notifId){
-  await Notifications.cancelScheduledNotificationAsync(notifId);
 }

@@ -24,6 +24,8 @@ const SignOutUser = () => {
 
 function DeleteButton()  {
 
+    const [memberId, setMemberId] = useState('');
+
 
     //deletes account of currently signed in user.
 
@@ -50,11 +52,12 @@ function DeleteButton()  {
         const result2 = memberSnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
         console.log(result2);
 
-        result2.forEach(async (result) => {
-            const docRef = doc(db,"member",result.id);
-            console.log(result.id)
+        result2.forEach(async (result2) => {
+            const docRef = doc(db,"member",result2.id);
+            console.log(result2.id)
             await deleteDoc(docRef);
         });
+
         console.log("Member deleted")
 
         

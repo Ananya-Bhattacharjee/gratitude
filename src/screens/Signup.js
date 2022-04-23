@@ -24,6 +24,8 @@ const SignUp = () => {
     const [newPassword, setPassword] = useState('');
     const [newCode, setCode] = useState('');
 
+
+
     const navigation = useNavigation();
 
 
@@ -64,8 +66,22 @@ const SignUp = () => {
       }
       await setDoc(docRef, payload);
 
+      //store the reminder time in backend.
+      const collectionRef2 = collection(db, "reminder");
+      const docRef2 = doc(collectionRef2);
+      const payload2 = {
+        reminderEmail: newEmail,
+        hour: "00",
+        minutes: "00",
+        isEnabled: false,
+      }
+      await setDoc(docRef2, payload2);
+
+
 
     }
+
+ 
 
      
       return (

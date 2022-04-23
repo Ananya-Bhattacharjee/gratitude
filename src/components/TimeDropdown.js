@@ -3,77 +3,78 @@ import { Button, View, Text, StyleSheet, Switch } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { styles } from "./CustomTextInput";
 
-import { db } from "../../firebase";
-import { doc, setDoc, getDoc} from 'firebase/firestore';
+import { db, auth } from "../../firebase";
+import { doc, setDoc, getDoc, collection, query, getDocs, where, onSnapshot} from 'firebase/firestore';
 import { textShadowColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 
 const TimeDropdown = () => {
 
-  useEffect(() => {
-    getReminderTime();
-}, [])
-
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [reminderHour, setReminderHour] = useState('0');
-  const [reminderMinutes, setReminderMinutes] = useState('0');
+  const [reminderHour, setReminderHour] = useState('00');
+  const [reminderMinutes, setReminderMinutes] = useState('00');
 
   const [isEnabled, setIsEnabled] = useState(false);
-  const [text, setText] = useState('Press The Switch');
 
-  const getReminderTime = async () => {
-    const docRef = doc(db, "reminder", "reminder");
-    const docSnap = await getDoc(docRef);
-    const docReminder = docSnap.data();
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
-
-    //console.log(docSnap);
-    setReminderHour(docReminder.hour);
-    setReminderMinutes(docReminder.minutes);
-    setIsEnabled(docReminder.isEnabled);
-
-
-    
-  }
-
+  //gets reminder on component mount
   useEffect(() => {
-        setReminderTime();
-        if(isEnabled) {
-          alert("Reminder set for " + reminderHour+":"+reminderMinutes)
-        } 
-       
-  }, [reminderHour, reminderMinutes, isEnabled]);
+    const q = query(collection(db, "reminder"), where("reminderEmail", "==", auth.currentUser.email));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const hour = doc.data().hour;
+        const minutes = doc.data().minutes;
+        const isEnabled = doc.data().isEnabled;
+        
+        setReminderHour(hour);
+        setReminderMinutes(minutes);
+        setIsEnabled(isEnabled);
+    });
+    return unsubscribe;
+    });
+}, [])
 
-  
+ 
+  const [text, setText] = useState('Press The Switch');
 
   const toggleSwitch = () => {
       if (isEnabled) {
           setText('Inactive');
+          setReminderTime(reminderHour, reminderMinutes, false);
       }
       else {
           setText('Active');
+          setReminderTime(reminderHour, reminderMinutes, true);
       }
 
       setIsEnabled(previousState => !previousState);
-    
+
      
   }
 
 
   //store the reminder time in backend.
-  const setReminderTime = async () => {
-    await setDoc(doc(db, "reminder", "reminder"), {
-      reminder: "reminder",
-      hour: reminderHour,
-      minutes: reminderMinutes,
-      isEnabled: isEnabled,
+  const setReminderTime = async ( hours, minutes, isToggled) => {
+
+    //query for reminder with current user's email
+     const reminderCol = collection(db, "reminder");
+     const userReminder = query(reminderCol, where("reminderEmail", "==", auth.currentUser.email));
+     const reminderSnapshot = await getDocs(userReminder);
+
+     const reminderDoc = reminderSnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+
+     alert("Reminder set for: " + hours + ":" + minutes)
+
+     reminderDoc.forEach(async (result) => {
+      await setDoc(doc(db, "reminder", result.id), {
+        reminderEmail: auth.currentUser.email,
+        hour: hours,
+        minutes: minutes,
+        isEnabled: isToggled,
+      });
     });
+
+
+ 
 
   } 
 
@@ -90,10 +91,14 @@ const TimeDropdown = () => {
     console.log("A date has been picked: ", time);
     console.log((time.getHours()<10?'0':'') + time.getHours());
     console.log((time.getMinutes()<10?'0':'') + time.getMinutes());
+
+    //set reminder hour and minutes
     setReminderHour((time.getHours()<10?'0':'') + time.getHours());
     setReminderMinutes((time.getMinutes()<10?'0':'') + time.getMinutes());
-    //set reminder time in backend.
     
+    setReminderTime((time.getHours()<10?'0':'') + time.getHours(),
+    (time.getMinutes()<10?'0':'') + time.getMinutes(), isEnabled);
+
     hideDatePicker();
   };
 

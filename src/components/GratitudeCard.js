@@ -209,7 +209,7 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
             )}
             ListHeaderComponent={
                 <View>
-                <Text style={styles.headingEntry}>Met Needs:</Text>
+                <Text style={styles.headingEntry}>Dimensions for Gratitude:</Text>
                 </View>
             }
             />
