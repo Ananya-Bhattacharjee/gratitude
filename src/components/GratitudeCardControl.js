@@ -81,7 +81,7 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, descript
               textAlign: 'center',
               paddingBottom: 10,
               }}>
-              Write Your Entry Here:
+              What are you grateful for?
               </Text>
             <GratitudeInput
             style={styles.modalText}

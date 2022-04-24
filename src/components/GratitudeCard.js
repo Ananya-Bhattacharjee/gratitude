@@ -83,7 +83,7 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentN
               textAlign: 'center',
               paddingBottom: 10,
               }}>
-              Met Needs:
+              Areas of Life:
               </Text>
             <View style={{marginBottom: 55}}>
             <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
@@ -96,7 +96,7 @@ function EditButton({ entryId, email, entryDate, moodBefore, moodAfter, currentN
               textAlign: 'center',
               paddingBottom: 10,
               }}>
-              Write Your Entry Here:
+             What are you grateful for?
               </Text>
             <GratitudeInput
             style={styles.modalText}
@@ -209,7 +209,7 @@ const GratitudeCard = ({  entryId, email, entryDate, moodBefore, moodAfter, desc
             )}
             ListHeaderComponent={
                 <View>
-                <Text style={styles.headingEntry}>Dimensions for Gratitude:</Text>
+                <Text style={styles.headingEntry}>Areas of Life:</Text>
                 </View>
             }
             />

@@ -27,7 +27,6 @@ const Create = () => {
     const [newMoodBefore, setMoodBefore] = useState({});
     const [newMoodAfter, setMoodAfter] = useState({});
     const [needs, setNeeds] = useState([]);
-    const [characters, setCharacters] = useState([]);
     const [newEntry, setEntry] = useState('');
     const email = auth.currentUser.email;
     const currentDate = moment().format("DD/MM/YYYY");
@@ -51,7 +50,6 @@ const Create = () => {
           moodBefore: newMoodBefore,
           moodAfter: newMoodAfter,
           needs: needs,
-          characters: characters,
         }
         await setDoc(newEntryRef,payload);
         
@@ -59,7 +57,6 @@ const Create = () => {
         setMoodBefore({});
         setMoodAfter({});
         setNeeds([]);
-        setCharacters([]);
         setEntry('');
 
 
@@ -95,9 +92,9 @@ const Create = () => {
                 <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
                 <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
                 <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
-                <Text style={stylesCreate.label}>Met Needs</Text>
+                <Text style={stylesCreate.label}>Areas of Life:</Text>
                 <MetNeedsMenu selectedNeeds={needs} setSelectedNeeds={setNeeds}/>
-                <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
+                <Text style={stylesCreate.label}>What are you grateful for?</Text>
                 <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
                 <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
                 <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>
@@ -118,7 +115,7 @@ const Create = () => {
                 <Text style={styles.screenTitle}>CREATE NEW{"\n"}ENTRY</Text>
                 <Text style={stylesCreate.label}>How Are You Feeling Before?</Text>
                 <Dropdown mood={newMoodBefore} setMood={setMoodBefore}/>
-                <Text style={stylesCreate.label}>Write Gratitude Entry Here</Text>
+                <Text style={stylesCreate.label}>What are you grateful for?</Text>
                 <GratitudeInput value={newEntry} placeholder="Write Here..." setValue={setEntry}/>
                 <Text style={stylesCreate.label}>How Are You Feeling After?</Text>
                 <Dropdown mood={newMoodAfter} setMood={setMoodAfter}/>

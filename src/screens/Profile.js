@@ -118,23 +118,29 @@ const Profile = () => {
     const [overallMoodAfter, setOverallMoodAfter] = useState(0);
 
     useEffect(() => {
+        
         GetMember();
+  
 
         const q = query(collection(db, "entries"), where("memberEmail", "==", auth.currentUser.email));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const entriesArray = [];
             const moodArrayBefore = [];
             const moodArrayAfter = [];
+            const needsArray = [];
             if(code=="TRANQUIL") {
-                const needsArray = [];
                 querySnapshot.forEach((doc) => {
                     entriesArray.push(doc.data()),
                     moodArrayBefore.push(doc.data().moodBefore.count);
                     moodArrayAfter.push(doc.data().moodAfter.count);
+                    
                     needsArray.push(doc.data().needs)
+                    
                     setEntries(entriesArray);
-                    console.log("Needs Array:" + needsArray);
-                    countNeeds(needsArray)
+                    
+                    console.log("Needs Array:")
+                    console.log(needsArray);
+                    countNeeds(needsArray);
                 });
             }
             else {
@@ -151,7 +157,9 @@ const Profile = () => {
            
         });
         return unsubscribe;
-    }, []);
+    }, [code]);
+
+
 
     //get member profile details
     const GetMember = async () => {
@@ -249,13 +257,13 @@ const Profile = () => {
 
         //console.log("Needs: " + needsArray[0][0].id)
 
-        var countPhysicalWellbeing = 0
-        var countPeaceCalm = 0
-        var countEnergisingMoments = 0
-        var countEngagementFlow = 0
-        var countConnection = 0
-        var countAccomplishment = 0
-        var countMeaning = 0
+        let countPhysicalWellbeing = physicalWellbeing;
+        let countPeaceCalm = peaceCalm;
+        let countEnergisingMoments = energisingMoments;
+        let countEngagementFlow = engagementFlow;
+        let countConnection = connection;
+        let countAccomplishment = accomplishment;
+        let countMeaning = meaning;
 
         //iterate through array of needs.
         for(let i = 0; i < needsArray.length; i++) {
@@ -263,40 +271,47 @@ const Profile = () => {
                 if(needsArray[i][j].id == "1") {
                      //count physical wellbeing
                      countPhysicalWellbeing++
-                     setPhysicalWellbeing(countPhysicalWellbeing)
+                    
                 }
                 if(needsArray[i][j].id == "2") {
                     //count peacecalm
                     countPeaceCalm++
-                    setPeaceCalm(countPeaceCalm)
+                    
                 }
                 if(needsArray[i][j].id == "3") {
                     //count energising moments
                     countEnergisingMoments++
-                    setEnergisingMoments(countEnergisingMoments)
+                 
                 }
                 if(needsArray[i][j].id == "4") {
                     //count engagement flow
                     countEngagementFlow++
-                    setEngagementFlow(countEngagementFlow)
+                    
                 }
                 if(needsArray[i][j].id == "5") {
                      //count connection
                     countConnection++
-                    setConnection(countConnection)
+                   
                 }
                 if(needsArray[i][j].id == "6") {
                     //count accomplishment
                     countAccomplishment++
-                    setAccomplishment(countAccomplishment)
+                   
                 }
                 if(needsArray[i][j].id == "7") {
                     //count meaning
                     countMeaning++
-                    setMeaning(countMeaning)
+                    
                 }
             }
 
+            setPhysicalWellbeing(countPhysicalWellbeing)
+            setPeaceCalm(countPeaceCalm)
+            setEnergisingMoments(countEnergisingMoments)
+            setEngagementFlow(countEngagementFlow)
+            setConnection(countConnection)
+            setAccomplishment(countAccomplishment)
+            setMeaning(countMeaning)
         }
 
 
@@ -371,7 +386,7 @@ const Profile = () => {
                   />
                     {/*Met Needs*/}
                     <TextInput
-                      value = {"Met Needs"}
+                      value = {"Dimensions of Gratitude"}
                       editable = {false}
                       style={styles.heading2}
                     />

@@ -42,20 +42,27 @@ Notifications.setNotificationHandler({
 });
 
 //define global variable
-let notificationEmail = "";
+//let notificationEmail = "";
 
 //declare class app
-
-
-
+let notificationEmail;
 
 const App = () => {
 
+
+
   useEffect(() => {
+    
+    const user = auth.currentUser;
+    if(user!=null) {
+      notificationEmail = user.email;
+      //test
+    }
+
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         setIsSignedIn(true);
-
+        
       }
       else {
         setIsSignedIn(false);
@@ -66,7 +73,8 @@ const App = () => {
     })
   
 
-  })   
+  },[])   
+
 
 
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -82,54 +90,82 @@ const App = () => {
 
     const [hourString, setHourString] = useState('');
     const [minutesString, setMinutesString] = useState('');
+
+    const [notifyId, setNotifyId] = useState('');
   
     const [reminderId, setReminderId] = useState('reminder');
 
     const [reminderMounted, setReminderMounted] = useState(false);
 
-    
+    //const [notificationEmail, setNotificationEmail] = useState('');
 
+    const [isSignedIn, setIsSignedIn] = useState(false);
+
+  /*
+    useEffect(() => {
+      if(isSignedIn) {
+        setNotificationEmail(auth.currentUser.email);
+      }
+      return () => {
+        setNotificationEmail('');
+      };
+    }, [isSignedIn]);*/
+    
     
      //gets reminder on component mount
+
       useEffect(() => {
 
-          if(isSignedIn) {
-            notificationEmail = auth.currentUser.email;
-          }
-          else {
-            notificationEmail = "";
-          }
+          
 
-          const q = query(collection(db, "reminder"), where("reminderEmail", "==", notificationEmail));
-        
-          console.log("working now");
-  
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              querySnapshot.docChanges().forEach(change => {
-  
-                const docReminder = doc.data();
-  
-                //set time text
-                setHourString(docReminder.hour);
-                setMinutesString(docReminder.minutes);
-      
-                //set integer time
-                const hourValue = parseInt(docReminder.hour);
-                const minutesValue = parseInt(docReminder.minutes);
+          auth.onAuthStateChanged(
+            (user) => {
+                if(user!=null) {
+                  notificationEmail = auth.currentUser.email;
+                }
+                else {
+                  notificationEmail = "";
+                }
                 
-                setReminderHour(hourValue);
-                setReminderMinutes(minutesValue);
-                setIsEnabled(docReminder.isEnabled);
-  
-                console.log("reminders set. Notification ready");
-  
-              });
-  
-  
-          });
-          return unsubscribe;
-          });
+                console.log("onAuthStateChanged: " + !!user);
+            
+                const q = query(collection(db, "reminder"), where("reminderEmail", "==", notificationEmail));
+        
+                console.log("working now");
+        
+                const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                    //querySnapshot.docChanges().forEach(change => {
+        
+                      const docReminder = doc.data();
+        
+                      //set time text
+                      setHourString(docReminder.hour);
+                      setMinutesString(docReminder.minutes);
+            
+                      //set integer time
+                      const hourValue = parseInt(docReminder.hour);
+                      const minutesValue = parseInt(docReminder.minutes);
+                      
+                      setReminderHour(hourValue);
+                      setReminderMinutes(minutesValue);
+                      setIsEnabled(docReminder.isEnabled);
+        
+                      console.log("Reminder read");
+        
+                    //});
+        
+        
+                });
+                return unsubscribe;
+                });
+            
+            
+              }
+          );
+
+          //console.log("notification email")
+          
 
       
     }, [])
@@ -137,13 +173,30 @@ const App = () => {
     useEffect(async () => {
 
       if(isEnabled) {
-        var notifyUser = schedulePushNotification(reminderHour, reminderMinutes, hourString, minutesString);
+        const notifyUser = schedulePushNotification(reminderHour, reminderMinutes, hourString, minutesString);
         console.log("Notification Scheduled: " + notifyUser);
         console.log("Notification scheduled at " + hourString + ":" + minutesString);
+
+        
+        //cancel previous daily reminder time.
+        
+        try {
+          cancelPushNotification(notifyId._W);
+          console.log(notifyId);
+        }
+        catch(err) {
+          console.log(err);
+        }
+        
+
+        setNotifyId(notifyUser);
        }
-       //if(!isEnabled) {
-        //Notifications.cancelAllScheduledNotificationsAsync()
-       //}
+       if(!isEnabled) {
+        Notifications.cancelAllScheduledNotificationsAsync() //cancel all notifications
+        console.log("Cancel Notifications");
+       }
+
+       
     }, [reminderHour, reminderMinutes, isEnabled])
 
     /*
@@ -235,17 +288,11 @@ const App = () => {
     }, []);
 
     //hide console warnings
-    //LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
+    LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
+    LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
 
-    //LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
 
- 
-    const [isSignedIn, setIsSignedIn] = useState(false);
-    
-  
     if(isSignedIn===true) {
-
-     
 
       return (
         <BottomTabs/>
@@ -283,8 +330,6 @@ const App = () => {
         )
   
     }
-
-    
   }
 
 export default App;
@@ -340,3 +385,8 @@ async function schedulePushNotification(hours, minutes, hourString, minutesStrin
   console.log("Minutes: " + minutes);
   return id;
 }
+
+async function cancelPushNotification(id) {
+  Notifications.cancelScheduledNotificationAsync(id);
+}
+
