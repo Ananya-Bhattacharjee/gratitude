@@ -39,9 +39,21 @@ const SignUp = () => {
           addMember();
           alert("Successfully Signed Up");
         })
-        .catch((result)=> {
-          console.log(result);
-          alert("Email already exists. Please try again.");
+        .catch((error)=> {
+          console.log(error);
+          if(error.code=="auth/email-already-in-use") {
+            alert("Email already exists. Please try again!")
+          }
+          else if(error.code=="auth/invalid-email") {
+            alert("Email is invalid. Must contain @. Please try again!")
+          }
+          else if(error.code=="auth/wrong-password") {
+            alert("Password invalid. Must be at least 6 characters. Please try again!")
+          }
+          else {
+            alert("Sign up failed. Please try again!");
+          }
+         
           setEmail('');
           setPassword('');
           setCode('');

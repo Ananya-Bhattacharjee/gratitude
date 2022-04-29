@@ -35,6 +35,7 @@ const Login = () => {
      })
      .catch((error)=> {
        console.log(error);
+       alert("Sign in failed. Invalid email or password. Please try again!")
      })
     }
 
