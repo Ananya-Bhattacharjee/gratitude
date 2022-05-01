@@ -11,10 +11,10 @@ import { textShadowColor } from "react-native/Libraries/Components/View/ReactNat
 const TimeDropdown = () => {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [reminderHour, setReminderHour] = useState('00');
+  const [reminderHour, setReminderHour] = useState('18');
   const [reminderMinutes, setReminderMinutes] = useState('00');
 
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
 
   //gets reminder on component mount
   useEffect(() => {

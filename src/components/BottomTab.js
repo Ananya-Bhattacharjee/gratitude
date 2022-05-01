@@ -15,10 +15,11 @@ import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 
 //import screens
-import Dashboard from '../screens/Dashboard'
-import Create from '../screens/Create'
-import Profile from '../screens/Profile'
-import Settings from '../screens/Settings'
+import Dashboard from '../screens/Dashboard';
+import Create from '../screens/Create';
+import Profile from '../screens/Profile';
+import Settings from '../screens/Settings';
+import About from '../screens/About';
 
 //import date
 import moment from 'moment'; 
@@ -27,18 +28,6 @@ import moment from 'moment';
 const Tab = createBottomTabNavigator();
 
 const TabStack = createNativeStackNavigator();
-
-
-/*
-function StackTab() {
-  <StackTab.Navigator initialRouteName="DASHBOARD">
-      <StackTab.Screen name="DASHBOARD" component={Dashboard} />
-      <StackTab.Screen name="CREATE" component={Create} />
-      <StackTab.Screen name="PROFILE" component={Profile} />
-      <StackTab.Screen name="SETTINGS" component={Settings} />
-    </StackTab.Navigator>
-}*/
-
 
 const BottomTabs = () => {
 
@@ -152,6 +141,20 @@ const BottomTabs = () => {
                       return (
                         <FontAwesome
                           name="user"
+                          size={40}
+                          color={tabInfo.focused ? "#0062ff" : "#FFFFFF"}
+                        />
+                      );
+                    },
+                  }}
+                /> 
+                 <Tab.Screen name="ABOUT" component={About} 
+                  options={{
+                    headerTitle: 'About',
+                    tabBarIcon: (tabInfo) => {
+                      return (
+                        <MaterialIcons
+                          name="info"
                           size={40}
                           color={tabInfo.focused ? "#0062ff" : "#FFFFFF"}
                         />

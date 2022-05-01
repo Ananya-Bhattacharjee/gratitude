@@ -83,7 +83,7 @@ const SignUp = () => {
       const docRef2 = doc(collectionRef2);
       const payload2 = {
         reminderEmail: newEmail,
-        hour: "00",
+        hour: "18",
         minutes: "00",
         isEnabled: false,
       }

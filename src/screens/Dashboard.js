@@ -150,17 +150,10 @@ const Dashboard = (props) => {
           membersArray.push(doc.data()),
           console.log(code)
         });
-  
-        /*
-        memberSnapshot.docs.map(doc => 
-            membersArray.push(doc.data()),
-            console.log(members)
-        )*/
+
   
         setMembers(membersArray);
-      
-  
-        //get membercode
+    
        
   
       }
