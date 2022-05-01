@@ -47,7 +47,7 @@ const SignUp = () => {
           else if(error.code=="auth/invalid-email") {
             alert("Email is invalid. Must contain @. Please try again!")
           }
-          else if(error.code=="auth/wrong-password") {
+          else if(error.code=="auth/weak-password") {
             alert("Password invalid. Must be at least 6 characters. Please try again!")
           }
           else {
@@ -85,7 +85,7 @@ const SignUp = () => {
         reminderEmail: newEmail,
         hour: "18",
         minutes: "00",
-        isEnabled: false,
+        isEnabled: true,
       }
       await setDoc(docRef2, payload2);
 
