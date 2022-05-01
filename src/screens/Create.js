@@ -110,16 +110,17 @@ function InfoButton() {
                     <Text style={stylesCreate.textParagraph}>
                     If your entry doesn't relate to any of the areas above, choose this option and we will record this entry under the category "other".
                     </Text>
-                <Pressable
+              
+                </View>
+              }
+              >    
+              </FlatList>
+              <Pressable
                   style={[stylesCreate.button, stylesCreate.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={stylesCreate.closeText}>X</Text>
               </Pressable>
-                </View>
-              }
-              >    
-              </FlatList>
             </View>
           </View>
         </Modal>
@@ -322,6 +323,8 @@ const stylesCreate = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 0,
+        marginRight: 10,
+        marginTop: 10,
       },
       textStyle: {
         color: "#0060ff",
