@@ -142,7 +142,7 @@ function DeleteButton({ entryId })  {
         //const deleteEntry = query(entriesCol, where("entryId", "==", entry));
 
         await deleteDoc(doc(db,"entries",entry))
-        alert("Deleted " + entry);
+        alert("Entry Deleted ");
 
     }
 
