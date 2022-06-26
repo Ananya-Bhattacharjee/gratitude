@@ -105,29 +105,30 @@ const TimeDropdown = () => {
   return (
     <View>
     <View style={stylesTime.settingsCard}>
-    <Text style={stylesTime.settingsHeadings}>Set Daily Reminder:</Text>
-    <Switch
+    <Text style={stylesTime.settingsHeadings}>Daily Reminder Time:</Text>
+    {/*<Switch
         trackColor={{false: '#b7b7b7', true:'#6467dc'}}
         thumbColor={isEnabled ? '#ffffff' : '#ffffff'}
         ios_backgroundColor='#b7b7b7'
         onValueChange={toggleSwitch}
         value={isEnabled}
         style={stylesTime.switch}
-          />
-      </View>
-      <View style={stylesTime.settingsCard}>
-          <Text style={stylesTime.settingsHeadings}>Reminder Time: </Text>
-            <View style={{width: '100%'}}>
+      />*/}
+      <View style={{width: '100%'}}>
         <Text style={stylesTime.reminderTime}>{reminderHour}:{reminderMinutes}</Text>
-        <Button title="Select New Reminder Time" onPress={showDatePicker} />
+        {/*<Button title="Select New Reminder Time" onPress={showDatePicker} />
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="time"
           locale="en_GB" 
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-        />
+      />*/}
       </View>
+      </View>
+      <View style={stylesTime.settingsCard}>
+          {/*<Text style={stylesTime.settingsHeadings}>Reminder Time: </Text>*/}
+            
       </View>
       </View>
 
