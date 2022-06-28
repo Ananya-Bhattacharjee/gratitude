@@ -15,6 +15,7 @@ Instructions to run from source code for IOS User
 2. Open command prompt or command line in computer.
 3. type the code "cd directory-path" **where directory-path is the address of the directory of the source code
 4. type and enter "npm install" to install all the node modules for the app. 
+   - If you face an issue regarding "path-package" installation, type the command "npm i patch-package"
 5. type in the command line "expo start" to start the Metro Bundler.
 6. Once metro bundler is loaded, a QR code will appear on the command line which you can then scan using your phone.
    - For IOS Users: Scan code with your Camera App
